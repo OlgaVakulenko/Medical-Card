@@ -11,14 +11,14 @@ html{
     box-sizing: inherit;
 }
 body{
-    color: #000;
-    font-family: 'Lato', sans-serif;
+    color: #323f3f;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 400;
 }
 .container {
-    max-width: 1220px;
+    max-width: 1160px;
     width: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     margin: 0 auto;
 }
