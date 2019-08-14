@@ -1,0 +1,59 @@
+.board-container {
+    padding: 15px 25px;
+    background-color:#f2f7f7;
+    border: 2px solid #4acacb;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: auto;
+    grid-gap: 20px;
+    position: relative;
+}
+.no-visit {
+    position: absolute;
+    top: 40%;
+    left: 400px;
+    font-size: 18px;
+    font-weight: bold;
+    display: none;
+}
+.visiting-card {
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid #ff955f;
+    padding: 15px 15px 0;
+    position: relative;
+}
+.show-more {
+    border-radius: 20px;
+    border: 1px solid #ff955f;
+    background-color: #ff955f;
+    color: #ffffff;
+    font-size: 14px;
+    text-transform: capitalize;
+    font-weight: bold;
+    margin: 10px 30px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+.show-more:hover{
+    color: #ff955f;
+    border-color: #ff955f;
+    background-color: white;
+}
+.close {
+    color: #ff955f;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.patient-information{
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    grid-gap: 10px;
+    padding-bottom: 10px;
+}
+.name-of-field {
+    font-weight: lighter;
+    color:#687d7d;
+}
