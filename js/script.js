@@ -9,6 +9,11 @@ class Visit {
         this._visitTarget = visitTarget;
         this._visits = [];
     }
+    addVisit(){
+        this._visits.push(this);
+        console.log(this._visits);
+
+    }
 }
 class VisitToCardiologist extends Visit{
     constructor(doctor,visitDate,fullname,visitTarget,preassure, weightIndex,age, illnesses){
@@ -18,6 +23,7 @@ class VisitToCardiologist extends Visit{
         this._age = age;
         this._illnesses = illnesses;
     }
+
 }
 class VisitToDentist extends Visit{
     constructor(doctor,visitDate,fullname,visitTarget,lastVisitDate){
@@ -32,3 +38,10 @@ class VisitToTherapist extends Visit{
     }
 }
 
+const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
+console.log(newVisit);
+const newVisitDentist = new VisitToDentist('Dentist','10.08','Vasya','plomba','9.07');
+const newVisitCardiologist = new VisitToCardiologist('cardiologist','12/09','serio Karelli','heart','100/60', '2', 'none');
+console.log(newVisitDentist);
+newVisitDentist.addVisit();
+newVisitCardiologist.addVisit();
