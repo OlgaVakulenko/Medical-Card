@@ -1,6 +1,6 @@
 .modal {
     position: fixed;
-    top: 15%;
+    top: 8%;
     left: 33%;
     width: 30%;
     border-radius: 5px;
@@ -8,6 +8,8 @@
     padding: 1% 2% 2%;
     text-align: center;
     color: #323f3f;
+    background-color: rgba(242, 247, 247, 1);
+
 }
 
 .select, .input {
@@ -21,8 +23,12 @@
     padding: 3%;
 }
 
+.input::placeholder {
+color: rgba(50, 63, 63, 0.6);;
+}
+
 .label {
-    color: #323f3f;
+    color: #009a95;
 }
 
 .button{
@@ -43,11 +49,13 @@
     margin-top: 5%;
     font-size: 16px;
     padding: 12px 35px;
+    background-color: white;
 }
 .cross {
     margin-left: 100%;
     display: inline-block;
     color: rgba(74, 202, 203, 0.5);
     font-size: 17px;
-   }
+    cursor: pointer;
+    }
 
