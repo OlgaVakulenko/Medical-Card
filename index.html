@@ -6,6 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css" integrity="sha256-7VVaJ5GDwFQiLIc+eNksQLUSSY5JNZtqv9o2BI8UGYg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -16,27 +17,24 @@
     </div>
 </header>
 <main class="main-visit-board">
-    <div class="container board-container">
-
-<form  action="#" class="modal">
-     <i class='fas fa-times cross'></i>
-    <select class="select"  name="doctor" id="visit-type">
-        <option value="кардиолог">Кардиолог</option>
-        <option value="стоматолог">Стоматолог</option>
-        <option value="терапевт">Терапевт</option>
-    </select>
-
-    <input data-id = "fullname-input" class='input' type="text"  placeholder="ФИО" required>
-    <input data-id = "target-input" class='input' type="text"  placeholder= "Цель визита" required>
-    <input data-id = "illness-input" class='input' type="text" placeholder="Перенесенные болезни" required>
-    <label class="label" for="last-visit">Дата последнего визита: <input data-id = "visit-input"  class='input' type="datetime-local" id="last-visit"  required></label>
-    <input data-id = "weigh-input" class='input' type="number" placeholder="Индекс массы тела" required>
-    <input data-id = "age-input" class='input' type="number" placeholder="Возраст" required>
-    <input data-id = "comment-input" class='input' type="text" placeholder="Ваши комментарии" required maxlength="400">
-    <input class="button btn-modal" type="submit" value="Создать визит">
-
-</form>
-
+    <div class="container">
+        <div class="board-container">
+            <div class="no-visit">Вы еще не записаны ни к одному врачу</div>
+            <div class="visiting-card">
+                <span class="close"><i class="fas fa-times"></i></span>
+                <div class="patient-information">
+                    <p class="name-of-field">ФИО:</p>
+                    <p class="information-field">Ирина Торохина</p>
+                </div>
+                <div class="patient-information">
+                    <p class="name-of-field">Врач:</p>
+                    <p class="information-field">Педиатр</p>
+                </div>
+                <button class="show-more">Показать больше</button>
+            </div>
+        </div>
+    </div>
+</main>
 
 
 <script src="js/script.js"></script>
