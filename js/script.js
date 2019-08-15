@@ -1,6 +1,33 @@
 /**
  * Created on 14.08.2019.
  */
+const mainButton = document.querySelector('.create-visit');//главная кнопка "Создать визит"
+const select = document.querySelector('.select');// Выбор врача
+const visitName = document.getElementById('fullname-input');//ФИО пациента
+const target = document.getElementById('target-input');//Цель визита
+const nextVisit = document.getElementById('next-visit-input');//Дата следующего визита
+const illnessList = document.getElementById('illness-input');//Список перенесенных заболеваний
+const lastVisit = document.getElementById('last-visit-input');//Дата последнего визита
+const weighClient = document.getElementById('weight-input');//Индекс массы тела
+const ageClient = document.getElementById('age-input');//Возраст пациента
+const comment = document.getElementById('comment-input');//Комментарии
+const modalButton = document.querySelector('.btn-modal');//Кнопка "Создать визит" на модальном окне
+const modalCrossButton = document.querySelector('.cross'); //кнопка-крестик на модальном окне
+
+
+console.log(mainButton);
+console.log(select);
+console.log(visitName);
+console.log(target);
+console.log(nextVisit);
+console.log(illnessList);
+console.log(lastVisit);
+console.log(weighClient);
+console.log(ageClient);
+console.log(comment);
+console.log(modalButton);
+console.log(modalCrossButton);
+
 class Visit {
     constructor(doctor,visitDate,fullname,visitTarget){
         this._doctor = doctor;
@@ -38,10 +65,16 @@ class VisitToTherapist extends Visit{
     }
 }
 
-const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
-console.log(newVisit);
-const newVisitDentist = new VisitToDentist('Dentist','10.08','Vasya','plomba','9.07');
-const newVisitCardiologist = new VisitToCardiologist('cardiologist','12/09','serio Karelli','heart','100/60', '2', 'none');
-console.log(newVisitDentist);
-newVisitDentist.addVisit();
-newVisitCardiologist.addVisit();
+
+
+
+
+
+
+// const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
+// console.log(newVisit);
+// const newVisitDentist = new VisitToDentist('Dentist','10.08','Vasya','plomba','9.07');
+// const newVisitCardiologist = new VisitToCardiologist('cardiologist','12/09','serio Karelli','heart','100/60', '2', 'none');
+// console.log(newVisitDentist);
+// newVisitDentist.addVisit();
+// newVisitCardiologist.addVisit();
