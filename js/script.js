@@ -3,7 +3,7 @@
  */
 const mainButton = document.querySelector('.create-visit');//главная кнопка "Создать визит"
 const select = document.querySelector('.select');// Выбор врача
-const visitName = document.getElementById('fullname-input');//ФИО пациента
+const visitorName = document.getElementById('fullname-input');//ФИО пациента
 const target = document.getElementById('target-input');//Цель визита
 const nextVisit = document.getElementById('next-visit-input');//Дата следующего визита
 const illnessList = document.getElementById('illness-input');//Список перенесенных заболеваний
@@ -17,7 +17,7 @@ const modalCrossButton = document.querySelector('.cross'); //кнопка-кре
 
 console.log(mainButton);
 console.log(select);
-console.log(visitName);
+console.log(visitorName);
 console.log(target);
 console.log(nextVisit);
 console.log(illnessList);
@@ -28,17 +28,17 @@ console.log(comment);
 console.log(modalButton);
 console.log(modalCrossButton);
 
+let visits=[];
 class Visit {
     constructor(doctor,visitDate,fullname,visitTarget){
         this._doctor = doctor;
         this._visitDate = visitDate;
         this._fullname = fullname;
         this._visitTarget = visitTarget;
-        this._visits = [];
     }
     addVisit(){
-        this._visits.push(this);
-        console.log(this._visits);
+        visits.push(this);
+        console.log(visits);
 
     }
 }
@@ -64,12 +64,6 @@ class VisitToTherapist extends Visit{
         this._age = age;
     }
 }
-
-
-
-
-
-
 
 // const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
 // console.log(newVisit);
