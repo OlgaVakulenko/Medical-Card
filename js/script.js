@@ -3,7 +3,7 @@
  */
 const mainButton = document.querySelector('.create-visit');//главная кнопка "Создать визит"
 const select = document.querySelector('.select');// Выбор врача
-const visitName = document.getElementById('fullname-input');//ФИО пациента
+const visitorName = document.getElementById('fullname-input');//ФИО пациента
 const target = document.getElementById('target-input');//Цель визита
 const nextVisit = document.getElementById('next-visit-input');//Дата следующего визита
 const illnessList = document.getElementById('illness-input');//Список перенесенных заболеваний
@@ -13,20 +13,9 @@ const ageClient = document.getElementById('age-input');//Возраст паци
 const comment = document.getElementById('comment-input');//Комментарии
 const modalButton = document.querySelector('.btn-modal');//Кнопка "Создать визит" на модальном окне
 const modalCrossButton = document.querySelector('.cross'); //кнопка-крестик на модальном окне
-
-
-console.log(mainButton);
-console.log(select);
-console.log(visitName);
-console.log(target);
-console.log(nextVisit);
-console.log(illnessList);
-console.log(lastVisit);
-console.log(weighClient);
-console.log(ageClient);
-console.log(comment);
-console.log(modalButton);
-console.log(modalCrossButton);
+const pressureValue = document.getElementById('pressure-input'); //давление
+const modalWindow = document.querySelector('.modal'); //Модальное окно
+const inputFields = document.querySelectorAll('form>input'); //Инпуты
 
 class Visit {
     constructor(doctor,visitDate,fullname,visitTarget){
@@ -64,7 +53,47 @@ class VisitToTherapist extends Visit{
         this._age = age;
     }
 }
-
+mainButton.addEventListener('click',function () {
+    modalWindow.classList.add('active');
+});
+select.addEventListener('change',function () {
+    inputFields.forEach(function (element) {
+        element.style.display = 'none';
+    });
+    switch (select.selectedIndex) {
+        case(0):
+            target.style.display = 'block';
+            target.style.display = 'block';
+            pressureValue.style.display = 'block';
+            weighClient.style.display = 'block';
+            illnessList.style.display = 'block';
+            ageClient.style.display = 'block';
+            visitorName.style.display = 'block';
+            nextVisit.style.display = 'block';
+            comment.style.display = 'block';
+            modalButton.style.display = 'inline-block';
+            break;
+        case(1):
+            target.style.display = 'block';
+            lastVisit.style.display = 'block';
+            visitorName.style.display = 'block';
+            nextVisit.style.display = 'block';
+            comment.style.display = 'block';
+            modalButton.style.display = ' inline-block';
+            break;
+        case(2):
+            visitorName.style.display = 'block';
+            nextVisit.style.display = 'block';
+            ageClient.style.display = 'block';
+            target.style.display = 'block';
+            comment.style.display = 'block';
+            modalButton.style.display = 'inline-block';
+            break;
+    }
+});
+modalCrossButton.addEventListener ('click',function () {
+    modalWindow.classList.remove('active')
+});
 
 
 
