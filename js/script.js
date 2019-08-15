@@ -1,6 +1,7 @@
 /**
  * Created on 14.08.2019.
  */
+
 const mainButton = document.querySelector('.create-visit');//главная кнопка "Создать визит"
 const select = document.querySelector('.select');// Выбор врача
 const visitorName = document.getElementById('fullname-input');//ФИО пациента
@@ -29,6 +30,18 @@ console.log(modalButton);
 console.log(modalCrossButton);
 
 let visits=[];
+function checkVisits(visits) {
+    const noVisitsText = document.querySelector('.no-visit');
+    if(visits.length===0){
+        noVisitsText.classList.add('active');
+    }else{
+        noVisitsText.classList.remove('active');
+    }
+}
+window.onload = checkVisits(visits);
+document.querySelector('.board-container').addEventListener('change', (e)=>{
+    checkVisits(visits);
+});
 class Visit {
     constructor(doctor,visitDate,fullname,visitTarget){
         this._doctor = doctor;
