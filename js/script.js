@@ -1,6 +1,7 @@
 /**
  * Created on 14.08.2019.
  */
+const modalWindow = document.querySelector('.modal');
 const mainButton = document.querySelector('.create-visit');//главная кнопка "Создать визит"
 const select = document.querySelector('.select');// Выбор врача
 const visitorName = document.getElementById('fullname-input');//ФИО пациента
@@ -13,21 +14,22 @@ const ageClient = document.getElementById('age-input');//Возраст паци
 const comment = document.getElementById('comment-input');//Комментарии
 const modalButton = document.querySelector('.btn-modal');//Кнопка "Создать визит" на модальном окне
 const modalCrossButton = document.querySelector('.cross'); //кнопка-крестик на модальном окне
+const pressureValue = document.getElementById('pressure-input'); //давление
 
-
-console.log(mainButton);
-console.log(select);
-console.log(visitorName);
-console.log(target);
-console.log(nextVisit);
-console.log(illnessList);
-console.log(lastVisit);
-console.log(weighClient);
-console.log(ageClient);
-console.log(comment);
-console.log(modalButton);
-console.log(modalCrossButton);
-
+//
+// console.log(mainButton);
+// console.log(select);
+// console.log(visiterName);
+// console.log(target);
+// console.log(nextVisit);
+// console.log(illnessList);
+// console.log(lastVisit);
+// console.log(weighClient);
+// console.log(ageClient);
+// console.log(comment);
+// console.log(modalButton);
+// console.log(modalCrossButton);
+// console.log(pressureValue);
 let visits=[];
 class Visit {
     constructor(doctor,visitDate,fullname,visitTarget){
@@ -35,7 +37,7 @@ class Visit {
         this._visitDate = visitDate;
         this._fullname = fullname;
         this._visitTarget = visitTarget;
-    }
+           }
     addVisit(){
         visits.push(this);
         console.log(visits);
@@ -64,6 +66,42 @@ class VisitToTherapist extends Visit{
         this._age = age;
     }
 }
+
+
+modalButton.addEventListener('click', function (e) {
+    e.preventDefault();
+    let selectIndex = select.selectedIndex,
+        doctor = select.options[selectIndex].value,
+        visitDate = nextVisit.value,
+        visitTarget = target.value,
+        fullname = visitorName.value,
+        illnesses = illnessList.value,
+        lastVisitDate = lastVisit.value,
+        age = ageClient.value,
+        weightIndex = weighClient.value,
+        pressure = pressureValue.value,
+        commentText = comment.value,
+        newVisit;
+    switch (selectIndex) {
+        case(0):
+            newVisit = new VisitToCardiologist(doctor,visitDate,fullname,visitTarget, pressure, weightIndex,age, illnesses);
+           break;
+        case(1):
+            newVisit = new VisitToDentist(doctor,visitDate,fullname,visitTarget,lastVisitDate);
+            break;
+        case(2):
+            newVisit = new VisitToTherapist(doctor,visitDate,fullname,visitTarget,age);
+          break;
+
+
+    }
+    modalWindow.style.display = 'none';
+    newVisit.addVisit();
+    console.log(newVisit);
+});
+
+
+
 
 // const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
 // console.log(newVisit);
