@@ -93,7 +93,6 @@ select.addEventListener('change',function () {
     switch (select.selectedIndex) {
         case(0):
             target.style.display = 'block';
-            target.style.display = 'block';
             pressureValue.style.display = 'block';
             weighClient.style.display = 'block';
             illnessList.style.display = 'block';
@@ -151,8 +150,8 @@ modalButton.addEventListener('click', function (e) {
             newVisit = new VisitToTherapist(doctor,visitDate,fullname,visitTarget, visitID,age);
           break;
 
+
     }
-    modalWindow.style.display = 'none';
     addVisit(newVisit);
     console.log(newVisit);
     checkVisits(visits);

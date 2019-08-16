@@ -5,7 +5,7 @@
     width: 30%;
     border-radius: 5px;
     box-shadow: 0 0 6px 0 rgba(74, 202, 203, 0.5);
-    padding: 1% 2% 2%;
+    padding: 1%;
     text-align: center;
     color: #323f3f;
     background-color: rgba(242, 247, 247, 1);
@@ -25,9 +25,11 @@
     box-shadow:0 0 4px 0 rgba(74, 202, 203, 0.5);
     padding: 3%;
 }
-
+.active{
+    display: block;
+}
 .input::placeholder {
-color: rgba(50, 63, 63, 0.6);;
+    color: rgba(50, 63, 63, 0.6);;
 }
 
 .label {
@@ -55,7 +57,7 @@ color: rgba(50, 63, 63, 0.6);;
     background-color: white;
 }
 .cross {
-    margin-left: 100%;
+    margin-left: 97%;
     display: inline-block;
     color: rgba(74, 202, 203, 0.5);
     font-size: 17px;
