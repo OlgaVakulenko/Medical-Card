@@ -16,8 +16,8 @@ const comment = document.getElementById('comment-input');//Комментари�
 const modalButton = document.querySelector('.btn-modal');//Кнопка "Создать визит" на модальном окне
 const modalCrossButton = document.querySelector('.cross'); //кнопка-крестик на модальном окне
 const pressureValue = document.getElementById('pressure-input'); //давление
+const modalWindow = document.querySelector('.modal'); //Модальное окно
 const inputFields = document.querySelectorAll('form>input'); //Инпуты
-
 //
 // console.log(mainButton);
 // console.log(select);
@@ -33,6 +33,13 @@ const inputFields = document.querySelectorAll('form>input'); //Инпуты
 // console.log(modalCrossButton);
 // console.log(pressureValue);
 let visits=[];
+function addVisit(visitObj){
+    visits.push(visitObj);
+    console.log(visits);
+}
+function removeVisit() {
+    // myArray.findIndex(x => x.id === '45');
+}
 function checkVisits(visits) {
     const noVisitsText = document.querySelector('.no-visit');
     if(visits.length===0){
@@ -45,21 +52,18 @@ window.onload = checkVisits(visits);
 
 
 class Visit {
-    constructor(doctor,visitDate,fullname,visitTarget){
+    constructor(doctor,visitDate,fullname,visitTarget, visitID){
         this._doctor = doctor;
         this._visitDate = visitDate;
         this._fullname = fullname;
         this._visitTarget = visitTarget;
-           }
-    addVisit(){
-        visits.push(this);
-        console.log(visits);
-
+        this._visitId = visitID
     }
+
 }
 class VisitToCardiologist extends Visit{
-    constructor(doctor,visitDate,fullname,visitTarget,preassure, weightIndex,age, illnesses){
-        super(doctor,visitDate,fullname,visitTarget);
+    constructor(doctor,visitDate,fullname,visitTarget, visitID, preassure, weightIndex,age, illnesses){
+        super(doctor,visitDate,fullname,visitTarget, visitID);
         this._preassure = preassure;
         this._weightIndex = weightIndex;
         this._age = age;
@@ -68,14 +72,14 @@ class VisitToCardiologist extends Visit{
 
 }
 class VisitToDentist extends Visit{
-    constructor(doctor,visitDate,fullname,visitTarget,lastVisitDate){
-        super(doctor,visitDate,fullname,visitTarget);
+    constructor(doctor,visitDate,fullname,visitTarget, visitID,lastVisitDate){
+        super(doctor,visitDate,fullname,visitTarget, visitID);
         this._lastVisitDate = lastVisitDate;
     }
 }
 class VisitToTherapist extends Visit{
-    constructor(doctor,visitDate,fullname,visitTarget,age){
-        super(doctor,visitDate,fullname,visitTarget);
+    constructor(doctor,visitDate,fullname,visitTarget, visitID,age){
+        super(doctor,visitDate,fullname,visitTarget, visitID);
         this._age = age;
     }
 }
@@ -88,7 +92,6 @@ select.addEventListener('change',function () {
     });
     switch (select.selectedIndex) {
         case(0):
-            target.style.display = 'block';
             target.style.display = 'block';
             pressureValue.style.display = 'block';
             weighClient.style.display = 'block';
@@ -134,66 +137,26 @@ modalButton.addEventListener('click', function (e) {
         weightIndex = weighClient.value,
         pressure = pressureValue.value,
         commentText = comment.value,
+        visitID = Date.now(),
         newVisit;
     switch (selectIndex) {
         case(0):
-            newVisit = new VisitToCardiologist(doctor,visitDate,fullname,visitTarget, pressure, weightIndex,age, illnesses);
+            newVisit = new VisitToCardiologist(doctor,visitDate,fullname,visitTarget, visitID, pressure, weightIndex,age, illnesses);
            break;
         case(1):
-            newVisit = new VisitToDentist(doctor,visitDate,fullname,visitTarget,lastVisitDate);
+            newVisit = new VisitToDentist(doctor,visitDate,fullname,visitTarget, visitID,lastVisitDate);
             break;
         case(2):
-            newVisit = new VisitToTherapist(doctor,visitDate,fullname,visitTarget,age);
+            newVisit = new VisitToTherapist(doctor,visitDate,fullname,visitTarget, visitID,age);
           break;
 
 
     }
-    modalWindow.classList.remove('active');
-    newVisit.addVisit();
+    addVisit(newVisit);
     console.log(newVisit);
+    checkVisits(visits);
 });
 
-mainButton.addEventListener('click',function () {
-    modalWindow.classList.add('active');
-});
-select.addEventListener('change',function () {
-    inputFields.forEach(function (element) {
-        element.style.display = 'none';
-    });
-    switch (select.selectedIndex) {
-        case(0):
-            target.style.display = 'block';
-            target.style.display = 'block';
-            pressureValue.style.display = 'block';
-            weighClient.style.display = 'block';
-            illnessList.style.display = 'block';
-            ageClient.style.display = 'block';
-            visitorName.style.display = 'block';
-            nextVisit.style.display = 'block';
-            comment.style.display = 'block';
-            modalButton.style.display = 'inline-block';
-            break;
-        case(1):
-            target.style.display = 'block';
-            lastVisit.style.display = 'block';
-            visitorName.style.display = 'block';
-            nextVisit.style.display = 'block';
-            comment.style.display = 'block';
-            modalButton.style.display = ' inline-block';
-            break;
-        case(2):
-            visitorName.style.display = 'block';
-            nextVisit.style.display = 'block';
-            ageClient.style.display = 'block';
-            target.style.display = 'block';
-            comment.style.display = 'block';
-            modalButton.style.display = 'inline-block';
-            break;
-    }
-});
-modalCrossButton.addEventListener ('click',function () {
-    modalWindow.classList.remove('active')
-});
 
 
 
