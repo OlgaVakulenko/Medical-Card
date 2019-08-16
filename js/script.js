@@ -152,9 +152,11 @@ modalButton.addEventListener('click', function (e) {
 
 
     }
+
     addVisit(newVisit);
     console.log(newVisit);
     checkVisits(visits);
+    modalWindow.classList.remove('active');
 });
 
 
