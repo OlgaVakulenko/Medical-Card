@@ -2,7 +2,7 @@
  * Created on 14.08.2019.
  */
 
-const modalWindow = document.querySelector('.modal');
+
 const mainButton = document.querySelector('.create-visit');//главная кнопка "Создать визит"
 const select = document.querySelector('.select');// Выбор врача
 const visitorName = document.getElementById('fullname-input');//ФИО пациента
@@ -16,7 +16,8 @@ const comment = document.getElementById('comment-input');//Комментари�
 const modalButton = document.querySelector('.btn-modal');//Кнопка "Создать визит" на модальном окне
 const modalCrossButton = document.querySelector('.cross'); //кнопка-крестик на модальном окне
 const pressureValue = document.getElementById('pressure-input'); //давление
-
+const modalWindow = document.querySelector('.modal'); //Модальное окно
+const inputFields = document.querySelectorAll('form>input'); //Инпуты
 //
 // console.log(mainButton);
 // console.log(select);
@@ -41,6 +42,8 @@ function checkVisits(visits) {
     }
 }
 window.onload = checkVisits(visits);
+
+
 class Visit {
     constructor(doctor,visitDate,fullname,visitTarget){
         this._doctor = doctor;
@@ -76,7 +79,47 @@ class VisitToTherapist extends Visit{
         this._age = age;
     }
 }
-
+mainButton.addEventListener('click',function () {
+    modalWindow.classList.add('active');
+});
+select.addEventListener('change',function () {
+    inputFields.forEach(function (element) {
+        element.style.display = 'none';
+    });
+    switch (select.selectedIndex) {
+        case(0):
+            target.style.display = 'block';
+            target.style.display = 'block';
+            pressureValue.style.display = 'block';
+            weighClient.style.display = 'block';
+            illnessList.style.display = 'block';
+            ageClient.style.display = 'block';
+            visitorName.style.display = 'block';
+            nextVisit.style.display = 'block';
+            comment.style.display = 'block';
+            modalButton.style.display = 'inline-block';
+            break;
+        case(1):
+            target.style.display = 'block';
+            lastVisit.style.display = 'block';
+            visitorName.style.display = 'block';
+            nextVisit.style.display = 'block';
+            comment.style.display = 'block';
+            modalButton.style.display = ' inline-block';
+            break;
+        case(2):
+            visitorName.style.display = 'block';
+            nextVisit.style.display = 'block';
+            ageClient.style.display = 'block';
+            target.style.display = 'block';
+            comment.style.display = 'block';
+            modalButton.style.display = 'inline-block';
+            break;
+    }
+});
+modalCrossButton.addEventListener ('click',function () {
+    modalWindow.classList.remove('active')
+});
 
 modalButton.addEventListener('click', function (e) {
     e.preventDefault();

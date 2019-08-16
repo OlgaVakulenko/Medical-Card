@@ -9,7 +9,10 @@
     text-align: center;
     color: #323f3f;
     background-color: rgba(242, 247, 247, 1);
-
+    display: none;
+}
+.active{
+    display: block;
 }
 
 .select, .input {
@@ -58,4 +61,6 @@ color: rgba(50, 63, 63, 0.6);;
     font-size: 17px;
     cursor: pointer;
     }
-
+.cross:hover {
+    color: #4acacb;
+}
