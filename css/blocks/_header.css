@@ -19,6 +19,7 @@
     padding: 15px 25px;
     background-color: transparent;
     font-weight: 700;
+    cursor: pointer;
 }
 .button:hover,
 .button:active{
