@@ -27,15 +27,15 @@ function addVisit(visitObj){
 }
 function removeVisit(visitObjId) {
     let removeIndex = visits.findIndex((e)=>{
-        return e.visitId === visitObjId.visitId
+        return e.visitId === visitObjId
     });
     visits.splice(removeIndex, 1);
 }
-closeCard.addEventListener('click', ()=>{
-    let visitingCardID = this.parentNode.dataset.visitId;
-    let visitObjToRemove= document.querySelector(`.visiting-card[data-visit-Id=${visitingCardID}]`)
-    removeVisit();
-})
+closeCard.addEventListener('click', (e)=>{
+    let visitingCardID = +this.parentNode.dataset.visitId;
+    // let visitObjToRemove= document.querySelector(`.visiting-card[data-visit-Id=${visitingCardID}]`);
+    removeVisit(visitingCardID);
+});
 function checkVisits(visits) {
     const noVisitsText = document.querySelector('.no-visit');
     if(visits.length===0){
@@ -44,7 +44,27 @@ function checkVisits(visits) {
         noVisitsText.classList.remove('active');
     }
 }
+function checkLocalStorage() {
+
+    let localStorageVisits = localStorage.getItem('localVisits');
+    if(localStorageVisits===null){
+        console.log('No saved Visits on Local Storage');
+    }else{
+        let parsedVisits = JSON.parse(localStorageVisits);
+        console.log(parsedVisits);
+    }
+}
+function pushVisitsToLocalStorage(visits) {
+    alert(`visits = ${visits}, JSON stringify visits = ${JSON.stringify(visits)}`);
+    if(visits.length>0){
+        let localStorageVisits = JSON.stringify(visits);
+        localStorage.setItem('localVisits',localStorageVisits);
+    }
+}
 window.onload = checkVisits(visits);
+window.onload = checkLocalStorage();
+
+
 
 
 class Visit {
@@ -58,6 +78,7 @@ class Visit {
     get visitId(){
         return this._visitId;
     }
+
 
 }
 class VisitToCardiologist extends Visit{
@@ -154,6 +175,10 @@ modalButton.addEventListener('click', function (e) {
     checkVisits(visits);
     modalWindow.classList.remove('active');
 });
+window.addEventListener('beforeunload',()=>{
+    pushVisitsToLocalStorage(visits);
+});
+
 
 // const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
 // console.log(newVisit);
