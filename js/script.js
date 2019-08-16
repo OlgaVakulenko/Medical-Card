@@ -17,7 +17,10 @@ const modalButton = document.querySelector('.btn-modal');//Кнопка "Соз�
 const modalCrossButton = document.querySelector('.cross'); //кнопка-крестик на модальном окне
 const pressureValue = document.getElementById('pressure-input'); //давление
 const modalWindow = document.querySelector('.modal'); //Модальное окно
-const inputFields = document.querySelectorAll('form>input'); //Инпуты
+const inputFields = document.querySelectorAll('.field-for-doctors'); //Инпуты
+const labelForNextVisit = document.getElementById('label-for-next-visit'); //Лейбл для следующего визита
+const labelForLastVisit = document.getElementById('label-for-last-visit'); // Лейбл для последнего визита
+
 //
 // console.log(mainButton);
 // console.log(select);
@@ -85,6 +88,9 @@ class VisitToTherapist extends Visit{
 }
 mainButton.addEventListener('click',function () {
     modalWindow.classList.add('active');
+    labelForLastVisit.style.display = 'none';
+    lastVisit.style.display = 'none';
+
 });
 select.addEventListener('change',function () {
     inputFields.forEach(function (element) {
@@ -98,20 +104,24 @@ select.addEventListener('change',function () {
             illnessList.style.display = 'block';
             ageClient.style.display = 'block';
             visitorName.style.display = 'block';
+            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             comment.style.display = 'block';
             modalButton.style.display = 'inline-block';
             break;
         case(1):
             target.style.display = 'block';
+            labelForLastVisit.style.display = 'block';
             lastVisit.style.display = 'block';
             visitorName.style.display = 'block';
+            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             comment.style.display = 'block';
             modalButton.style.display = ' inline-block';
             break;
         case(2):
             visitorName.style.display = 'block';
+            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             ageClient.style.display = 'block';
             target.style.display = 'block';
