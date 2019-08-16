@@ -18,28 +18,24 @@ const modalCrossButton = document.querySelector('.cross'); //кнопка-кре
 const pressureValue = document.getElementById('pressure-input'); //давление
 const modalWindow = document.querySelector('.modal'); //Модальное окно
 const inputFields = document.querySelectorAll('form>input'); //Инпуты
-//
-// console.log(mainButton);
-// console.log(select);
-// console.log(visiterName);
-// console.log(target);
-// console.log(nextVisit);
-// console.log(illnessList);
-// console.log(lastVisit);
-// console.log(weighClient);
-// console.log(ageClient);
-// console.log(comment);
-// console.log(modalButton);
-// console.log(modalCrossButton);
-// console.log(pressureValue);
+const closeCard = document.querySelector('.close');
+
 let visits=[];
 function addVisit(visitObj){
     visits.push(visitObj);
     console.log(visits);
 }
-function removeVisit() {
-    // myArray.findIndex(x => x.id === '45');
+function removeVisit(visitObjId) {
+    let removeIndex = visits.findIndex((e)=>{
+        return e.visitId === visitObjId.visitId
+    });
+    visits.splice(removeIndex, 1);
 }
+closeCard.addEventListener('click', ()=>{
+    let visitingCardID = this.parentNode.dataset.visitId;
+    let visitObjToRemove= document.querySelector(`.visiting-card[data-visit-Id=${visitingCardID}]`)
+    removeVisit();
+})
 function checkVisits(visits) {
     const noVisitsText = document.querySelector('.no-visit');
     if(visits.length===0){
@@ -59,6 +55,9 @@ class Visit {
         this._visitTarget = visitTarget;
         this._visitId = visitID
     }
+    get visitId(){
+        return this._visitId;
+    }
 
 }
 class VisitToCardiologist extends Visit{
@@ -69,7 +68,6 @@ class VisitToCardiologist extends Visit{
         this._age = age;
         this._illnesses = illnesses;
     }
-
 }
 class VisitToDentist extends Visit{
     constructor(doctor,visitDate,fullname,visitTarget, visitID,lastVisitDate){
@@ -149,8 +147,6 @@ modalButton.addEventListener('click', function (e) {
         case(2):
             newVisit = new VisitToTherapist(doctor,visitDate,fullname,visitTarget, visitID,age);
           break;
-
-
     }
 
     addVisit(newVisit);
@@ -158,9 +154,6 @@ modalButton.addEventListener('click', function (e) {
     checkVisits(visits);
     modalWindow.classList.remove('active');
 });
-
-
-
 
 // const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
 // console.log(newVisit);
