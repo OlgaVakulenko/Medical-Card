@@ -18,10 +18,24 @@ const modalCrossButton = document.querySelector('.cross'); //кнопка-кре
 const pressureValue = document.getElementById('pressure-input'); //давление
 const modalWindow = document.querySelector('.modal'); //Модальное окно
 const inputFields = document.querySelectorAll('form>input'); //Инпуты
-//
+
+const card = document.querySelector('.visiting-card');
+const patientInformation = document.querySelector('.patient-information');
+const nameOfField = document.querySelector('.name-of-field');
+const informField = document.querySelector('.information-field');
+const showMoreButton = document.querySelector('.show-more');
+const boardContainer = document.querySelector('.board-container');
+
+// console.log(card);
+// console.log(patientInformation);
+console.log(nameOfField);
+// console.log(informField.innerHTML);
+
+
+
 // console.log(mainButton);
 // console.log(select);
-// console.log(visiterName);
+// console.log(visitorName);
 // console.log(target);
 // console.log(nextVisit);
 // console.log(illnessList);
@@ -33,6 +47,7 @@ const inputFields = document.querySelectorAll('form>input'); //Инпуты
 // console.log(modalCrossButton);
 // console.log(pressureValue);
 let visits=[];
+
 function addVisit(visitObj){
     visits.push(visitObj);
     console.log(visits);
@@ -59,6 +74,25 @@ class Visit {
         this._visitTarget = visitTarget;
         this._visitId = visitID
     }
+    addNewCard() {
+        let newCard = card.cloneNode(),
+            patientInform= patientInformation.cloneNode(),
+            typeOfDoctor = informField.cloneNode(),
+            titleDoctor = nameOfField.cloneNode();
+            titleDoctor.innerText = "ФИО:";
+            typeOfDoctor.innerText = this._doctor;
+
+        newCard.classList.add('active');
+        newCard.setAttribute('data-visit-Id', this._visitId);
+
+        boardContainer.appendChild(newCard);
+        newCard.appendChild(patientInform);
+        patientInform.appendChild(titleDoctor);
+        patientInform.appendChild(typeOfDoctor);
+
+   }
+
+
 
 }
 class VisitToCardiologist extends Visit{
@@ -120,6 +154,7 @@ select.addEventListener('change',function () {
             break;
     }
 });
+
 modalCrossButton.addEventListener ('click',function () {
     modalWindow.classList.remove('active')
 });
@@ -142,16 +177,20 @@ modalButton.addEventListener('click', function (e) {
     switch (selectIndex) {
         case(0):
             newVisit = new VisitToCardiologist(doctor,visitDate,fullname,visitTarget, visitID, pressure, weightIndex,age, illnesses);
+            newVisit.addNewCard();
            break;
         case(1):
             newVisit = new VisitToDentist(doctor,visitDate,fullname,visitTarget, visitID,lastVisitDate);
+            newVisit.addNewCard();
             break;
         case(2):
             newVisit = new VisitToTherapist(doctor,visitDate,fullname,visitTarget, visitID,age);
+            newVisit.addNewCard();
           break;
 
 
     }
+
 
     addVisit(newVisit);
     console.log(newVisit);
