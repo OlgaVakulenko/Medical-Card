@@ -17,9 +17,11 @@ const modalButton = document.querySelector('.btn-modal');//Кнопка "Соз�
 const modalCrossButton = document.querySelector('.cross'); //кнопка-крестик на модальном окне
 const pressureValue = document.getElementById('pressure-input'); //давление
 const modalWindow = document.querySelector('.modal'); //Модальное окно
-const inputFields = document.querySelectorAll('form>input'); //Инпуты
+const inputFields = document.querySelectorAll('.field-for-doctors'); //Инпуты
+const labelForNextVisit = document.getElementById('label-for-next-visit'); //Лейбл для следующего визита
+const labelForLastVisit = document.getElementById('label-for-last-visit'); // Лейбл для последнего визита
 
-
+//
 // console.log(mainButton);
 // console.log(select);
 // console.log(visitorName);
@@ -33,27 +35,22 @@ const inputFields = document.querySelectorAll('form>input'); //Инпуты
 // console.log(modalButton);
 // console.log(modalCrossButton);
 // console.log(pressureValue);
-
-let visits = [];
-
-function addVisit(visitObj) {
+let visits=[];
+function addVisit(visitObj){
     visits.push(visitObj);
     console.log(visits);
 }
-
 function removeVisit() {
     // myArray.findIndex(x => x.id === '45');
 }
-
 function checkVisits(visits) {
     const noVisitsText = document.querySelector('.no-visit');
-    if (visits.length === 0) {
+    if(visits.length===0){
         noVisitsText.classList.add('active');
-    } else {
+    }else{
         noVisitsText.classList.remove('active');
     }
 }
-
 window.onload = checkVisits(visits);
 
 
@@ -107,8 +104,6 @@ class VisitToCardiologist extends Visit {
         this._weightIndex = weightIndex;
         this._age = age;
         this._illnesses = illnesses;
-
-
     }
   showMore() {
       this._showMoreButton.addEventListener('click', () => {
@@ -182,11 +177,10 @@ class VisitToTherapist extends Visit {
         })
     }
 }
-
-mainButton.addEventListener('click', function () {
+mainButton.addEventListener('click',function () {
     modalWindow.classList.add('active');
 });
-select.addEventListener('change', function () {
+select.addEventListener('change',function () {
     inputFields.forEach(function (element) {
         element.style.display = 'none';
     });
@@ -220,8 +214,7 @@ select.addEventListener('change', function () {
             break;
     }
 });
-
-modalCrossButton.addEventListener('click', function () {
+modalCrossButton.addEventListener ('click',function () {
     modalWindow.classList.remove('active')
 });
 
@@ -266,11 +259,14 @@ modalButton.addEventListener('click', function (e) {
 
 
     }
+
     addVisit(newVisit);
     console.log(newVisit);
     checkVisits(visits);
     modalWindow.classList.remove('active');
 });
+
+
 
 
 // const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
