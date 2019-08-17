@@ -24,7 +24,7 @@ const labelForLastVisit = document.getElementById('label-for-last-visit'); // Л
 //
 // console.log(mainButton);
 // console.log(select);
-// console.log(visiterName);
+// console.log(visitorName);
 // console.log(target);
 // console.log(nextVisit);
 // console.log(illnessList);
@@ -55,42 +55,130 @@ window.onload = checkVisits(visits);
 
 
 class Visit {
-    constructor(doctor,visitDate,fullname,visitTarget, visitID){
+    constructor(doctor, visitDate, fullName, visitTarget, visitID, comments) {
         this._doctor = doctor;
         this._visitDate = visitDate;
-        this._fullname = fullname;
+        this._fullname = fullName;
         this._visitTarget = visitTarget;
-        this._visitId = visitID
+        this._visitId = visitID;
+        this._comments = comments;
+        this._newCard = document.createElement('div');
+        this._showMoreButton = document.createElement('button');
+        this._p = document.createElement('p');
+        this._span = document.createElement('span');
     }
 
+    createNewCard() {
+        this._p.className = 'name-of-field';
+
+        let  nameField = this._p.cloneNode(),
+             doctorField = this._p.cloneNode(),
+             visitField = this._p.cloneNode();
+
+        this._newCard.setAttribute('data-visitId', this._visitId);
+        this._newCard.className = 'visiting-card';
+        this._showMoreButton.className = 'show-more ';
+        this._span.className = 'close';
+        this._span.innerHTML = '<i class="fas fa-times"></i>';
+        this._showMoreButton.innerText = "Показать больше";
+
+
+        // nameField.insertAdjacentHTML('afterbegin', `ФИО:&nbsp${this._fullname}`);
+        nameField.innerHTML = `ФИО:&nbsp${this._fullname}`;
+        doctorField.innerHTML = `Врач:&nbsp${this._doctor}`;
+        visitField.innerHTML = `Дата визита:&nbsp${this._visitDate}`;
+
+        this._newCard.appendChild(this._span);
+        this._newCard.appendChild(nameField);
+        this._newCard.appendChild(doctorField);
+        this._newCard.appendChild(visitField);
+        this._newCard.appendChild(this._showMoreButton);
+        return this._newCard;
+    }
 }
-class VisitToCardiologist extends Visit{
-    constructor(doctor,visitDate,fullname,visitTarget, visitID, preassure, weightIndex,age, illnesses){
-        super(doctor,visitDate,fullname,visitTarget, visitID);
-        this._preassure = preassure;
+
+class VisitToCardiologist extends Visit {
+    constructor(doctor, visitDate, fullName, visitTarget, visitID, pressure, weightIndex, age, illnesses, comments) {
+        super(doctor, visitDate, fullName, visitTarget, visitID, comments);
+        this._pressure = pressure;
         this._weightIndex = weightIndex;
         this._age = age;
         this._illnesses = illnesses;
     }
+  showMore() {
+      this._showMoreButton.addEventListener('click', () => {
+          this._showMoreButton.style.display = 'none';
+         let  targetField = this._p.cloneNode(),
+              pressureField = this._p.cloneNode(),
+              weightField = this._p.cloneNode(),
+              illnessesField = this._p.cloneNode(),
+              ageField = this._p.cloneNode(),
+              comments = this._p.cloneNode();
+
+          targetField.innerHTML = `Цель визита:&nbsp${this._visitTarget}`;
+          pressureField.innerHTML = `Давление:&nbsp${this._pressure}`;
+          weightField.innerHTML = `Вес:&nbsp${this._weightIndex}`;
+          illnessesField.innerHTML = `Болезни:&nbsp${this._illnesses}`;
+          ageField.innerHTML = `Возраст:&nbsp${this._age}`;
+          comments.innerHTML = `Комментарии:&nbsp${this._comments}`;
+
+          this._newCard.insertBefore(ageField, this._showMoreButton);
+          this._newCard.insertBefore(illnessesField, this._showMoreButton);
+          this._newCard.insertBefore(weightField, this._showMoreButton);
+          this._newCard.insertBefore(pressureField, this._showMoreButton);
+          this._newCard.insertBefore(targetField, this._showMoreButton);
+          this._newCard.insertBefore(comments, this._showMoreButton);
+
+      })
+  }
 
 }
-class VisitToDentist extends Visit{
-    constructor(doctor,visitDate,fullname,visitTarget, visitID,lastVisitDate){
-        super(doctor,visitDate,fullname,visitTarget, visitID);
+
+class VisitToDentist extends Visit {
+    constructor(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, comments) {
+        super(doctor, visitDate, fullName, visitTarget, visitID, comments);
         this._lastVisitDate = lastVisitDate;
     }
+
+    showMore() {
+        this._showMoreButton.addEventListener('click', () => {
+            this._showMoreButton.style.display = 'none';
+            let targetField = this._p.cloneNode(),
+                lastVisitDateField = this._p.cloneNode(),
+                comments = this._p.cloneNode();
+
+            targetField.innerHTML = `Цель визита:&nbsp${this._visitTarget}`;
+            lastVisitDateField.innerHTML = `Дата последнего визита:&nbsp${this._lastVisitDate}`;
+            comments.innerHTML = `Комментарии:&nbsp${this._comments}`;
+            this._newCard.insertBefore(lastVisitDateField, this._showMoreButton);
+            this._newCard.insertBefore(targetField, this._showMoreButton);
+            this._newCard.insertBefore(comments, this._showMoreButton);
+        })
+    }
 }
-class VisitToTherapist extends Visit{
-    constructor(doctor,visitDate,fullname,visitTarget, visitID,age){
-        super(doctor,visitDate,fullname,visitTarget, visitID);
+class VisitToTherapist extends Visit {
+    constructor(doctor, visitDate, fullName, visitTarget, visitID, age, comments) {
+        super(doctor, visitDate, fullName, visitTarget, visitID, comments);
         this._age = age;
+    }
+    showMore() {
+        this._showMoreButton.addEventListener('click', () => {
+            this._showMoreButton.style.display = 'none';
+            let targetField = this._p.cloneNode(),
+                ageField = this._p.cloneNode(),
+                comments = this._p.cloneNode();
+
+            targetField.innerHTML = `Цель визита:&nbsp${this._visitTarget}`;
+            ageField.innerHTML = `Возраст:&nbsp${this._age}`;
+            comments.innerHTML = `Комментарии:&nbsp${this._comments}`;
+            this._newCard.insertBefore(ageField, this._showMoreButton);
+            this._newCard.insertBefore(targetField, this._showMoreButton);
+            this._newCard.insertBefore(comments, this._showMoreButton);
+        })
     }
 }
 mainButton.addEventListener('click',function () {
     modalWindow.classList.add('active');
-    labelForLastVisit.style.display = 'none';
-    lastVisit.style.display = 'none';
-
 });
 select.addEventListener('change',function () {
     inputFields.forEach(function (element) {
@@ -104,24 +192,20 @@ select.addEventListener('change',function () {
             illnessList.style.display = 'block';
             ageClient.style.display = 'block';
             visitorName.style.display = 'block';
-            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             comment.style.display = 'block';
             modalButton.style.display = 'inline-block';
             break;
         case(1):
             target.style.display = 'block';
-            labelForLastVisit.style.display = 'block';
             lastVisit.style.display = 'block';
             visitorName.style.display = 'block';
-            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             comment.style.display = 'block';
             modalButton.style.display = ' inline-block';
             break;
         case(2):
             visitorName.style.display = 'block';
-            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             ageClient.style.display = 'block';
             target.style.display = 'block';
@@ -140,7 +224,7 @@ modalButton.addEventListener('click', function (e) {
         doctor = select.options[selectIndex].value,
         visitDate = nextVisit.value,
         visitTarget = target.value,
-        fullname = visitorName.value,
+        fullName = visitorName.value,
         illnesses = illnessList.value,
         lastVisitDate = lastVisit.value,
         age = ageClient.value,
@@ -148,17 +232,30 @@ modalButton.addEventListener('click', function (e) {
         pressure = pressureValue.value,
         commentText = comment.value,
         visitID = Date.now(),
-        newVisit;
+        board = document.querySelector('.board-container'),
+        newVisit,
+        newCard;
+
     switch (selectIndex) {
         case(0):
-            newVisit = new VisitToCardiologist(doctor,visitDate,fullname,visitTarget, visitID, pressure, weightIndex,age, illnesses);
-           break;
+            newVisit = new VisitToCardiologist(doctor, visitDate, fullName, visitTarget, visitID, pressure, weightIndex, age, illnesses, commentText);
+            newCard = newVisit.createNewCard();
+            board.appendChild(newCard);
+            newVisit.showMore();
+
+            break;
         case(1):
-            newVisit = new VisitToDentist(doctor,visitDate,fullname,visitTarget, visitID,lastVisitDate);
+            newVisit = new VisitToDentist(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate);
+            newCard = newVisit.createNewCard();
+            board.appendChild(newCard);
+            newVisit.showMore();
             break;
         case(2):
-            newVisit = new VisitToTherapist(doctor,visitDate,fullname,visitTarget, visitID,age);
-          break;
+            newVisit = new VisitToTherapist(doctor, visitDate, fullName, visitTarget, visitID, age);
+            newCard = newVisit.createNewCard();
+            board.appendChild(newCard);
+            newVisit.showMore();
+            break;
 
 
     }
