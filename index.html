@@ -20,17 +20,17 @@
     <div class="container">
         <div class="board-container">
             <div class="no-visit">Вы еще не записаны ни к одному врачу</div>
-            <div class="visiting-card">
-                <span class="close"><i class="fas fa-times"></i></span>
-                <div class="patient-information">
-                    <p class="name-of-field">ФИО:</p>
-                    <p class="information-field">Ирина Торохина</p>
-                </div>
-                <div class="patient-information">
-                    <p class="name-of-field">Врач:</p>
-                    <p class="information-field">Педиатр</p>
-                </div>
-                <button class="show-more">Показать больше</button>
+<!--            <div class="visiting-card">-->
+<!--                <span class="close"><i class="fas fa-times"></i></span>-->
+<!--                <div class="patient-information">-->
+<!--                    <p class="name-of-field">ФИО:</p>-->
+<!--                    <p class="information-field">Ирина Торохина</p>-->
+<!--                </div>-->
+<!--                <div class="patient-information">-->
+<!--                    <p class="name-of-field">Врач:</p>-->
+<!--                    <p class="information-field">Педиатр</p>-->
+<!--                </div>-->
+<!--                <button class="show-more">Показать больше</button>-->
             </div>
         </div>
     </div>
@@ -45,12 +45,12 @@
 
     <input id = "fullname-input" class='input hide' type="text"  placeholder="ФИО" required>
     <input id = "target-input" class='input hide' type="text"  placeholder= "Цель визита" required>
-    <label class="label hide" for="next-visit-input">Дата планируемого визита: <input id = "next-visit-input"  class='input' type="datetime-local"  required></label>
+    <label class="label hide" for="next-visit-input">Дата планируемого визита: <input id = "next-visit-input"  class='input' type="date"  required></label>
     <input id = "illness-input" class='input hide' type="text" placeholder="Перенесенные болезни" required>
-    <label class="label hide" for="last-visit-input">Дата последнего визита: <input id = "last-visit-input"  class='input' type="datetime-local"  required></label>
+    <label class="label hide" for="last-visit-input">Дата последнего визита: <input id = "last-visit-input"  class='input' type="date"  required></label>
     <input id = "weight-input" class='input hide' type="number" placeholder="Индекс массы тела" required>
     <input id = "age-input" class='input hide' type="number" placeholder="Возраст" required>
-    <input id = "pressure-input" class='input hide' type="number" placeholder="Ваше давление" required>
+    <input id = "pressure-input" class='input hide' type="text" placeholder="Ваше давление" required>
     <input id = "comment-input" class='input hide' type="text" placeholder="Ваши комментарии" required maxlength="400">
     <input class="button btn-modal hide" type="submit" value="Создать визит">
 
