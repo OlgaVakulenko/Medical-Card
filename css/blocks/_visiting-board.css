@@ -11,8 +11,10 @@
 }
 .no-visit {
     position: absolute;
-    top: 40%;
-    left: 400px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 18px;
     font-weight: bold;
     display: none;
@@ -23,10 +25,6 @@
     border: 1px solid #ff955f;
     padding: 15px 15px 35px;
     position: relative;
-}
-
-.active {
-    display: block;
 }
 .show-more {
     position: absolute;

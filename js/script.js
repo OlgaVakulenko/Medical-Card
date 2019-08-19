@@ -17,8 +17,6 @@ const modalButton = document.querySelector('.btn-modal');//Кнопка "Соз�
 const modalCrossButton = document.querySelector('.cross'); //кнопка-крестик на модальном окне
 const pressureValue = document.getElementById('pressure-input'); //давление
 const modalWindow = document.querySelector('.modal'); //Модальное окно
-const closeCard = document.querySelector('.close');
-
 const inputFields = document.querySelectorAll('.field-for-doctors'); //Инпуты
 const labelForNextVisit = document.getElementById('label-for-next-visit'); //Лейбл для следующего визита
 const labelForLastVisit = document.getElementById('label-for-last-visit'); // Лейбл для последнего визита
@@ -28,17 +26,7 @@ function addVisit(visitObj){
     visits.push(visitObj);
     console.log(visits);
 }
-function removeVisit(visitObjId) {
-    let removeIndex = visits.findIndex((e)=>{
-        return e.visitId === visitObjId
-    });
-    visits.splice(removeIndex, 1);
-}
-closeCard.addEventListener('click', (e)=>{
-    let visitingCardID = +this.parentNode.dataset.visitId;
-    // let visitObjToRemove= document.querySelector(`.visiting-card[data-visit-Id=${visitingCardID}]`);
-    removeVisit(visitingCardID);
-});
+
 function checkVisits(visits) {
     const noVisitsText = document.querySelector('.no-visit');
     if(visits.length===0){
@@ -283,17 +271,28 @@ modalButton.addEventListener('click', function (e) {
     addVisit(newVisit);
     console.log(newVisit);
     checkVisits(visits);
+    const closeCards = document.querySelectorAll('.close');
+    closeCards.forEach((closeCard)=>
+        closeCard.onclick = (e)=>{
+            let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
+            console.log('close card event Listener: e.target: ',e.target);
+            let visitObjToRemove= document.querySelector(`.visiting-card[data-visitid="${visitingCardID}"]`);
+            console.log('visitObjToRemove: ',`.visiting-card[data-visitid="${visitingCardID}"]`);
+            let removeIndex = visits.findIndex((e)=>{
+                console.log('remove visit inline func, e.visitId: ',e.visitId);
+                console.log('remove visit inline func, visitObjId=visitingCardID: ',visitingCardID);
+                return e.visitId === visitingCardID;
+
+            });
+            visits.splice(removeIndex, 1);
+            console.log('visits',visits);
+            visitObjToRemove.remove();
+        }
+    );
+
     modalWindow.classList.remove('active');
 });
 window.addEventListener('beforeunload',()=>{
     pushVisitsToLocalStorage(visits);
 });
 
-
-// const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
-// console.log(newVisit);
-// const newVisitDentist = new VisitToDentist('Dentist','10.08','Vasya','plomba','9.07');
-// const newVisitCardiologist = new VisitToCardiologist('cardiologist','12/09','serio Karelli','heart','100/60', '2', 'none');
-// console.log(newVisitDentist);
-// newVisitDentist.addVisit();
-// newVisitCardiologist.addVisit();

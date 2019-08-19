@@ -11,9 +11,6 @@
     background-color: rgba(242, 247, 247, 1);
     display: none;
 }
-.active{
-    display: block;
-}
 .select, .input {
     color: #323f3f;
     display: block;
