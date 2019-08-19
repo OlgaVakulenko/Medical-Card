@@ -35,18 +35,8 @@ function checkVisits(visits) {
         noVisitsText.classList.remove('active');
     }
 }
-function checkLocalStorage() {
 
-    let localStorageVisits = localStorage.getItem('localVisits');
-    if(localStorageVisits===null){
-        console.log('No saved Visits on Local Storage');
-    }else{
-        let parsedVisits = JSON.parse(localStorageVisits);
-        console.log(parsedVisits);
-    }
-}
 function pushVisitsToLocalStorage(visits) {
-    alert(`visits = ${visits}, JSON stringify visits = ${JSON.stringify(visits)}`);
     if(visits.length>0){
         let localStorageVisits = JSON.stringify(visits);
         localStorage.setItem('localVisits',localStorageVisits);
@@ -54,9 +44,6 @@ function pushVisitsToLocalStorage(visits) {
 }
 window.onload = checkVisits(visits);
 window.onload = checkLocalStorage();
-
-
-
 
 class Visit {
     constructor(doctor, visitDate, fullName, visitTarget, visitID, comments) {
@@ -74,8 +61,6 @@ class Visit {
     get visitId(){
         return this._visitId;
     }
-
-
     createNewCard() {
         this._p.className = 'name-of-field';
 
@@ -139,9 +124,7 @@ class VisitToCardiologist extends Visit {
 
       })
   }
-
 }
-
 class VisitToDentist extends Visit {
     constructor(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, comments) {
         super(doctor, visitDate, fullName, visitTarget, visitID, comments);
@@ -183,6 +166,43 @@ class VisitToTherapist extends Visit {
             this._newCard.insertBefore(targetField, this._showMoreButton);
             this._newCard.insertBefore(comments, this._showMoreButton);
         })
+    }
+}
+function checkLocalStorage() {
+
+    let localStorageVisits = localStorage.getItem('localVisits');
+    if (localStorageVisits === null) {
+        console.log('No saved Visits on Local Storage');
+    } else {
+        let parsedVisits = JSON.parse(localStorageVisits);
+        console.log('Visits in local storage: ', parsedVisits);
+        parsedVisits.forEach(function (savedVisit) {
+            let restoredVisit, restoredCard;
+            switch (savedVisit._doctor) {
+                case("кардиолог"):
+                    savedVisit = new VisitToCardiologist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._pressure, savedVisit._weightIndex, savedVisit._age, savedVisit._illnesses, savedVisit._comments);
+                    restoredCard = savedVisit.createNewCard();
+                    document.querySelector('.board-container').appendChild(restoredCard);
+                    savedVisit.showMore();
+
+                    break;
+                case("стоматолог"):
+                    savedVisit = new VisitToDentist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._lastVisitDate);
+                    restoredCard = savedVisit.createNewCard();
+                    document.querySelector('.board-container').appendChild(restoredCard);
+                    savedVisit.showMore();
+                    break;
+                case("терапевт"):
+                    savedVisit = new VisitToTherapist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._age);
+                    restoredCard = savedVisit.createNewCard();
+                    document.querySelector('.board-container').appendChild(restoredCard);
+                    savedVisit.showMore();
+                    break;
+            }
+
+
+        });
+
     }
 }
 mainButton.addEventListener('click',function () {
@@ -264,34 +284,41 @@ modalButton.addEventListener('click', function (e) {
             board.appendChild(newCard);
             newVisit.showMore();
             break;
-
-
     }
 
     addVisit(newVisit);
     console.log(newVisit);
-    checkVisits(visits);
     const closeCards = document.querySelectorAll('.close');
     closeCards.forEach((closeCard)=>
-        closeCard.onclick = (e)=>{
-            let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
-            console.log('close card event Listener: e.target: ',e.target);
-            let visitObjToRemove= document.querySelector(`.visiting-card[data-visitid="${visitingCardID}"]`);
-            console.log('visitObjToRemove: ',`.visiting-card[data-visitid="${visitingCardID}"]`);
-            let removeIndex = visits.findIndex((e)=>{
-                console.log('remove visit inline func, e.visitId: ',e.visitId);
-                console.log('remove visit inline func, visitObjId=visitingCardID: ',visitingCardID);
-                return e.visitId === visitingCardID;
+        closeCard.onclick = removeVisit(e)
 
-            });
-            visits.splice(removeIndex, 1);
-            console.log('visits',visits);
-            visitObjToRemove.remove();
-        }
+        // closeCard.onclick = (e)=>{
+        //     let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
+        //     let visitObjToRemove= document.querySelector(`.visiting-card[data-visitid="${visitingCardID}"]`);
+        //     let removeIndex = visits.findIndex((e)=>{
+        //         return e.visitId === visitingCardID;
+        //
+        //     });
+        //     visits.splice(removeIndex, 1);
+        //     checkVisits(visits);
+        //     visitObjToRemove.remove();
+        //
+        // }
     );
-
+    checkVisits(visits);
     modalWindow.classList.remove('active');
 });
+function removeVisit(e) {
+    let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
+    let visitObjToRemove= document.querySelector(`.visiting-card[data-visitid="${visitingCardID}"]`);
+    let removeIndex = visits.findIndex((e)=>{
+        return e.visitId === visitingCardID;
+
+    });
+    visits.splice(removeIndex, 1);
+    checkVisits(visits);
+    visitObjToRemove.remove();
+}
 window.addEventListener('beforeunload',()=>{
     pushVisitsToLocalStorage(visits);
 });
