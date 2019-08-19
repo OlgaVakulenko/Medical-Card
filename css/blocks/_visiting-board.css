@@ -41,7 +41,8 @@
     cursor: pointer;
 
 }
-.show-more:hover, :active{
+.show-more:hover,
+.show-more:active{
     color: #ff955f;
     border-color: #ff955f;
     background-color: white;

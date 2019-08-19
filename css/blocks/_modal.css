@@ -41,11 +41,6 @@
     background-color: transparent;
     font-weight: 700;
 }
-.button:hover,
-.button:active{
-    background-color:#4acacb;
-    color: #fff;
-}
 .btn-modal {
     margin-top: 5%;
     font-size: 16px;
