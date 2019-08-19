@@ -14,7 +14,6 @@
 .active{
     display: block;
 }
-
 .select, .input {
     color: #323f3f;
     display: block;
@@ -23,7 +22,7 @@
     border:none;
     margin: 2.5%;
     box-shadow:0 0 4px 0 rgba(74, 202, 203, 0.5);
-    padding: 3%;
+    padding: 2%;
 }
 .active{
     display: block;
