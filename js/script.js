@@ -28,6 +28,7 @@ function addVisit(visitObj){
 }
 
 function checkVisits(visits) {
+    console.log('function check visits apllied');
     const noVisitsText = document.querySelector('.no-visit');
     if(visits.length===0){
         noVisitsText.classList.add('active');
@@ -42,9 +43,7 @@ function pushVisitsToLocalStorage(visits) {
         localStorage.setItem('localVisits',localStorageVisits);
     }
 }
-window.onload = function(){
-    checkVisits(visits)
-};
+window.onload = checkVisits(visits);
 window.onload = function(){
     checkLocalStorage();
 };
@@ -181,7 +180,7 @@ function checkLocalStorage() {
         let parsedVisits = JSON.parse(localStorageVisits);
         console.log('Visits in local storage: ', parsedVisits);
         parsedVisits.forEach(function (savedVisit) {
-            let restoredVisit, restoredCard;
+            let restoredCard;
             switch (savedVisit._doctor) {
                 case("кардиолог"):
                     savedVisit = new VisitToCardiologist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._pressure, savedVisit._weightIndex, savedVisit._age, savedVisit._illnesses, savedVisit._comments);
@@ -204,7 +203,15 @@ function checkLocalStorage() {
                     break;
             }
 
-
+            addVisit(savedVisit);
+            console.log(savedVisit);
+            const closeCards = document.querySelectorAll('.close');
+            closeCards.forEach((closeCard)=>
+                closeCard.onclick = function(e){
+                    removeVisit(e)
+                }
+            );
+            checkVisits(visits);
         });
 
     }
@@ -213,7 +220,6 @@ mainButton.addEventListener('click',function () {
     modalWindow.classList.add('active');
     labelForLastVisit.style.display = 'none';
     lastVisit.style.display = 'none';
-
 });
 select.addEventListener('change',function () {
     inputFields.forEach(function (element) {

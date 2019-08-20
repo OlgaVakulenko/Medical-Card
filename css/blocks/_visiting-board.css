@@ -27,6 +27,7 @@
     position: relative;
 }
 .show-more {
+    width: 80%;
     position: absolute;
     bottom: 3%;
     left: 50%;
