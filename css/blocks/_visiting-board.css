@@ -11,8 +11,10 @@
 }
 .no-visit {
     position: absolute;
-    top: 40%;
-    left: 400px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 18px;
     font-weight: bold;
     display: none;
@@ -21,17 +23,15 @@
     border-radius: 5px;
     background-color: white;
     border: 1px solid #ff955f;
-    padding: 15px 15px 35px;
+    padding: 15px 15px 20%;
     position: relative;
 }
-
-.active {
-    display: block;
-}
 .show-more {
+    width: 80%;
     position: absolute;
     bottom: 3%;
-    left: 20%;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 20px;
     border: 1px solid #ff955f;
     background-color: #ff955f;
@@ -43,7 +43,8 @@
     cursor: pointer;
 
 }
-.show-more:hover, :active{
+.show-more:hover,
+.show-more:active{
     color: #ff955f;
     border-color: #ff955f;
     background-color: white;

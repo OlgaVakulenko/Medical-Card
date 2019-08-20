@@ -11,9 +11,6 @@
     background-color: rgba(242, 247, 247, 1);
     display: none;
 }
-.active{
-    display: block;
-}
 .select, .input {
     color: #323f3f;
     display: block;
@@ -43,11 +40,6 @@
     padding: 15px 25px;
     background-color: transparent;
     font-weight: 700;
-}
-.button:hover,
-.button:active{
-    background-color:#4acacb;
-    color: #fff;
 }
 .btn-modal {
     margin-top: 5%;
