@@ -42,8 +42,12 @@ function pushVisitsToLocalStorage(visits) {
         localStorage.setItem('localVisits',localStorageVisits);
     }
 }
-window.onload = checkVisits(visits);
-window.onload = checkLocalStorage();
+window.onload = function(){
+    checkVisits(visits)
+};
+window.onload = function(){
+    checkLocalStorage();
+};
 
 class Visit {
     constructor(doctor, visitDate, fullName, visitTarget, visitID, comments) {
@@ -290,20 +294,9 @@ modalButton.addEventListener('click', function (e) {
     console.log(newVisit);
     const closeCards = document.querySelectorAll('.close');
     closeCards.forEach((closeCard)=>
-        closeCard.onclick = removeVisit(e)
-
-        // closeCard.onclick = (e)=>{
-        //     let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
-        //     let visitObjToRemove= document.querySelector(`.visiting-card[data-visitid="${visitingCardID}"]`);
-        //     let removeIndex = visits.findIndex((e)=>{
-        //         return e.visitId === visitingCardID;
-        //
-        //     });
-        //     visits.splice(removeIndex, 1);
-        //     checkVisits(visits);
-        //     visitObjToRemove.remove();
-        //
-        // }
+        closeCard.onclick = function(e){
+        removeVisit(e)
+    }
     );
     checkVisits(visits);
     modalWindow.classList.remove('active');
