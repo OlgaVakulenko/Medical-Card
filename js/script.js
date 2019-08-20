@@ -211,6 +211,9 @@ function checkLocalStorage() {
 }
 mainButton.addEventListener('click',function () {
     modalWindow.classList.add('active');
+    labelForLastVisit.style.display = 'none';
+    lastVisit.style.display = 'none';
+
 });
 select.addEventListener('change',function () {
     inputFields.forEach(function (element) {
@@ -224,20 +227,24 @@ select.addEventListener('change',function () {
             illnessList.style.display = 'block';
             ageClient.style.display = 'block';
             visitorName.style.display = 'block';
+            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             comment.style.display = 'block';
             modalButton.style.display = 'inline-block';
             break;
         case(1):
             target.style.display = 'block';
+            labelForLastVisit.style.display = 'block';
             lastVisit.style.display = 'block';
             visitorName.style.display = 'block';
+            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             comment.style.display = 'block';
             modalButton.style.display = ' inline-block';
             break;
         case(2):
             visitorName.style.display = 'block';
+            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             ageClient.style.display = 'block';
             target.style.display = 'block';
