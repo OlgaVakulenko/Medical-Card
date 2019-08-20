@@ -38,9 +38,12 @@ function checkVisits(visits) {
 }
 
 function pushVisitsToLocalStorage(visits) {
+    console.log('visits.length',visits.length);
     if(visits.length>0){
         let localStorageVisits = JSON.stringify(visits);
         localStorage.setItem('localVisits',localStorageVisits);
+    }else{
+        localStorage.clear();
     }
 }
 window.onload = checkVisits(visits);
@@ -174,6 +177,7 @@ class VisitToTherapist extends Visit {
 function checkLocalStorage() {
 
     let localStorageVisits = localStorage.getItem('localVisits');
+    console.log('localStorageVisits',localStorageVisits);
     if (localStorageVisits === null) {
         console.log('No saved Visits on Local Storage');
     } else {
