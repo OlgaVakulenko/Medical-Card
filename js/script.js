@@ -21,29 +21,14 @@ const inputFields = document.querySelectorAll('.field-for-doctors'); //Инпу�
 const labelForNextVisit = document.getElementById('label-for-next-visit'); //Лейбл для следующего визита
 const labelForLastVisit = document.getElementById('label-for-last-visit'); // Лейбл для последнего визита
 
-//
-// console.log(mainButton);
-// console.log(select);
-// console.log(visitorName);
-// console.log(target);
-// console.log(nextVisit);
-// console.log(illnessList);
-// console.log(lastVisit);
-// console.log(weighClient);
-// console.log(ageClient);
-// console.log(comment);
-// console.log(modalButton);
-// console.log(modalCrossButton);
-// console.log(pressureValue);
 let visits=[];
 function addVisit(visitObj){
     visits.push(visitObj);
     console.log(visits);
 }
-function removeVisit() {
-    // myArray.findIndex(x => x.id === '45');
-}
+
 function checkVisits(visits) {
+    console.log('function check visits apllied');
     const noVisitsText = document.querySelector('.no-visit');
     if(visits.length===0){
         noVisitsText.classList.add('active');
@@ -51,8 +36,17 @@ function checkVisits(visits) {
         noVisitsText.classList.remove('active');
     }
 }
-window.onload = checkVisits(visits);
 
+function pushVisitsToLocalStorage(visits) {
+    if(visits.length>0){
+        let localStorageVisits = JSON.stringify(visits);
+        localStorage.setItem('localVisits',localStorageVisits);
+    }
+}
+window.onload = checkVisits(visits);
+window.onload = function(){
+    checkLocalStorage();
+};
 
 class Visit {
     constructor(doctor, visitDate, fullName, visitTarget, visitID, comments) {
@@ -67,7 +61,9 @@ class Visit {
         this._p = document.createElement('p');
         this._span = document.createElement('span');
     }
-
+    get visitId(){
+        return this._visitId;
+    }
     createNewCard() {
         this._p.className = 'name-of-field';
 
@@ -131,9 +127,7 @@ class VisitToCardiologist extends Visit {
 
       })
   }
-
 }
-
 class VisitToDentist extends Visit {
     constructor(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, comments) {
         super(doctor, visitDate, fullName, visitTarget, visitID, comments);
@@ -178,9 +172,56 @@ class VisitToTherapist extends Visit {
         })
     }
 }
+function checkLocalStorage() {
+
+    let localStorageVisits = localStorage.getItem('localVisits');
+    if (localStorageVisits === null) {
+        console.log('No saved Visits on Local Storage');
+    } else {
+        let parsedVisits = JSON.parse(localStorageVisits);
+        console.log('Visits in local storage: ', parsedVisits);
+        parsedVisits.forEach(function (savedVisit) {
+            let restoredCard;
+            switch (savedVisit._doctor) {
+                case("кардиолог"):
+                    savedVisit = new VisitToCardiologist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._pressure, savedVisit._weightIndex, savedVisit._age, savedVisit._illnesses, savedVisit._comments);
+                    restoredCard = savedVisit.createNewCard();
+                    document.querySelector('.board-container').appendChild(restoredCard);
+                    savedVisit.showMore();
+
+                    break;
+                case("стоматолог"):
+                    savedVisit = new VisitToDentist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._lastVisitDate);
+                    restoredCard = savedVisit.createNewCard();
+                    document.querySelector('.board-container').appendChild(restoredCard);
+                    savedVisit.showMore();
+                    break;
+                case("терапевт"):
+                    savedVisit = new VisitToTherapist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._age);
+                    restoredCard = savedVisit.createNewCard();
+                    document.querySelector('.board-container').appendChild(restoredCard);
+                    savedVisit.showMore();
+                    break;
+            }
+
+            addVisit(savedVisit);
+            console.log(savedVisit);
+            const closeCards = document.querySelectorAll('.close');
+            closeCards.forEach((closeCard)=>
+                closeCard.onclick = function(e){
+                    removeVisit(e)
+                }
+            );
+            checkVisits(visits);
+        });
+
+    }
+}
 mainButton.addEventListener('click',function () {
     modalWindow.reset();
     modalWindow.classList.add('active');
+    labelForLastVisit.style.display = 'none';
+    lastVisit.style.display = 'none';
 });
 select.addEventListener('change',function () {
     inputFields.forEach(function (element) {
@@ -195,20 +236,24 @@ select.addEventListener('change',function () {
             illnessList.style.display = 'block';
             ageClient.style.display = 'block';
             visitorName.style.display = 'block';
+            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             comment.style.display = 'block';
             modalButton.style.display = 'inline-block';
             break;
         case(1):
             target.style.display = 'block';
+            labelForLastVisit.style.display = 'block';
             lastVisit.style.display = 'block';
             visitorName.style.display = 'block';
+            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             comment.style.display = 'block';
             modalButton.style.display = ' inline-block';
             break;
         case(2):
             visitorName.style.display = 'block';
+            labelForNextVisit.style.display = 'block';
             nextVisit.style.display = 'block';
             ageClient.style.display = 'block';
             target.style.display = 'block';
@@ -258,23 +303,31 @@ modalButton.addEventListener('click', function (e) {
             board.appendChild(newCard);
             newVisit.showMore();
             break;
-
-
     }
 
     addVisit(newVisit);
     console.log(newVisit);
+    const closeCards = document.querySelectorAll('.close');
+    closeCards.forEach((closeCard)=>
+        closeCard.onclick = function(e){
+        removeVisit(e)
+    }
+    );
     checkVisits(visits);
     modalWindow.classList.remove('active');
 });
+function removeVisit(e) {
+    let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
+    let visitObjToRemove= document.querySelector(`.visiting-card[data-visitid="${visitingCardID}"]`);
+    let removeIndex = visits.findIndex((e)=>{
+        return e.visitId === visitingCardID;
 
+    });
+    visits.splice(removeIndex, 1);
+    checkVisits(visits);
+    visitObjToRemove.remove();
+}
+window.addEventListener('beforeunload',()=>{
+    pushVisitsToLocalStorage(visits);
+});
 
-
-
-// const newVisit = new Visit('Therapist','22.08','Татьяна Фетисова','плановый осмотр');
-// console.log(newVisit);
-// const newVisitDentist = new VisitToDentist('Dentist','10.08','Vasya','plomba','9.07');
-// const newVisitCardiologist = new VisitToCardiologist('cardiologist','12/09','serio Karelli','heart','100/60', '2', 'none');
-// console.log(newVisitDentist);
-// newVisitDentist.addVisit();
-// newVisitCardiologist.addVisit();
