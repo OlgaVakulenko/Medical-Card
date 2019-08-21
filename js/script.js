@@ -221,16 +221,9 @@ function checkLocalStorage() {
 
     }
 }
-mainButton.addEventListener('click',function () {
-    modalWindow.reset();
-    modalWindow.classList.add('active');
-    labelForLastVisit.style.display = 'none';
-    lastVisit.style.display = 'none';
-});
-select.addEventListener('change',function () {
+function fieldsReset() {
     inputFields.forEach(function (element) {
         element.style.display = 'none';
-        element.reset();
     });
     switch (select.selectedIndex) {
         case(0):
@@ -265,6 +258,13 @@ select.addEventListener('change',function () {
             modalButton.style.display = 'inline-block';
             break;
     }
+}
+mainButton.addEventListener('click',function () {
+    modalWindow.classList.add('active');
+    fieldsReset();
+});
+select.addEventListener('change',function () {
+    fieldsReset();
 });
 modalCrossButton.addEventListener ('click',function () {
     modalWindow.classList.remove('active')
@@ -318,6 +318,7 @@ modalButton.addEventListener('click', function (e) {
     }
     );
     checkVisits(visits);
+    modalWindow.reset();
     modalWindow.classList.remove('active');
 });
 function removeVisit(e) {
