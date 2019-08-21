@@ -150,6 +150,7 @@ class VisitToDentist extends Visit {
             targetField.innerHTML = `Цель визита:&nbsp${this._visitTarget}`;
             lastVisitDateField.innerHTML = `Дата последнего визита:&nbsp${this._lastVisitDate}`;
             comments.innerHTML = `Комментарии:&nbsp${this._comments}`;
+
             this._newCard.insertBefore(lastVisitDateField, this._showMoreButton);
             this._newCard.insertBefore(targetField, this._showMoreButton);
             this._newCard.insertBefore(comments, this._showMoreButton);
@@ -178,11 +179,13 @@ class VisitToTherapist extends Visit {
     }
 }
 mainButton.addEventListener('click',function () {
+    modalWindow.reset();
     modalWindow.classList.add('active');
 });
 select.addEventListener('change',function () {
     inputFields.forEach(function (element) {
         element.style.display = 'none';
+        element.reset();
     });
     switch (select.selectedIndex) {
         case(0):
@@ -242,16 +245,15 @@ modalButton.addEventListener('click', function (e) {
             newCard = newVisit.createNewCard();
             board.appendChild(newCard);
             newVisit.showMore();
-
             break;
         case(1):
-            newVisit = new VisitToDentist(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate);
+            newVisit = new VisitToDentist(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, commentText);
             newCard = newVisit.createNewCard();
             board.appendChild(newCard);
             newVisit.showMore();
             break;
         case(2):
-            newVisit = new VisitToTherapist(doctor, visitDate, fullName, visitTarget, visitID, age);
+            newVisit = new VisitToTherapist(doctor, visitDate, fullName, visitTarget, visitID, age, commentText);
             newCard = newVisit.createNewCard();
             board.appendChild(newCard);
             newVisit.showMore();
