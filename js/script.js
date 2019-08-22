@@ -42,7 +42,6 @@ function checkVisits(visits) {
 }
 
 function pushVisitsToLocalStorage(visits) {
-    console.log('visits.length',visits.length);
     if(visits.length>0){
         let localStorageVisits = JSON.stringify(visits);
         localStorage.setItem('localVisits',localStorageVisits);
@@ -70,6 +69,7 @@ class Visit {
         this._showMoreButton = document.createElement('button');
         this._p = document.createElement('p');
         this._span = document.createElement('span');
+        this._board = document.querySelector('.board-container');
     }
     get visitId(){
         return this._visitId;
@@ -102,23 +102,67 @@ class Visit {
         return this._newCard;
     }
 
-    // dragManager(dragStatus,shiftX,shiftY){
-    //     this._newCard.addEventListener('mousedown', function (event) {
-    //             dragStatus = true;
-    //             console.log(this);
-    //             this.style.position = 'fixed';
-    //             this.style.zIndex = '10';
-    //             shiftX = event.clientX - this.getBoundingClientRect().left;
-    //             shiftY = event.clientY - this.getBoundingClientRect().top;
-    //             console.log(event.clientY);
-    //             console.log(event.clientY);
-    //             console.log(shiftX);
-    //             console.log(shiftY);
-    //             this.style.left = event.pageX - shiftX + 'px';
-    //             this.style.top = event.pageY - shiftY + 'px';
-    //         });
-    //
-    // }
+    dragManager(){
+        let card = this._newCard;
+        console.log(card);
+        card.onmousedown = function(e) {
+
+            let coords = getCoords(card);
+            let shiftX = e.pageX - coords.left;
+            let shiftY = e.pageY - coords.top;
+
+            card.style.position = 'absolute';
+            document.body.appendChild(card);
+            moveAt(e);
+
+            card.style.zIndex = '10';
+
+            function moveAt(e) {
+                card.style.left = e.pageX - shiftX + 'px';
+                card.style.top = e.pageY - shiftY + 'px';
+                // const cardContainerSize = document.querySelector('.board-container').getBoundingClientRect();
+                // const cardSize = card.getBoundingClientRect();
+                //
+                //     if(cardContainerSize.top <= cardSize.top){
+                //         card.style.left = e.pageX - shiftX + 'px';
+                //         card.style.top = e.pageY - shiftY + 'px';
+                //     }
+                //     else{
+                //         card.style.top = cardContainerSize.top  + 'px';
+                //     }
+                //
+                // if(cardContainerSize.bottom <= cardSize.bottom){
+                //     card.style.top = e.pageY - shiftY + 'px';
+                // }
+                // else{
+                //     card.style.bottom = cardContainerSize.bottom  + 'px';
+                // }
+            }
+
+            document.onmousemove = function(e) {
+                moveAt(e);
+            };
+
+            card.onmouseup = function() {
+                document.onmousemove = null;
+                card.onmouseup = null;
+            };
+
+        };
+
+        card.ondragstart = function() {
+
+            return false;
+        };
+
+        function getCoords(elem) {
+            let box = elem.getBoundingClientRect();
+            return {
+                top: box.top + pageYOffset,
+                left: box.left + pageXOffset
+            };
+        }
+    }
 }
 
 class VisitToCardiologist extends Visit {
@@ -202,7 +246,6 @@ class VisitToTherapist extends Visit {
 function checkLocalStorage() {
 
     let localStorageVisits = localStorage.getItem('localVisits');
-    console.log('localStorageVisits',localStorageVisits);
     if (localStorageVisits === null) {
         console.log('No saved Visits on Local Storage');
     } else {
@@ -242,7 +285,6 @@ function checkLocalStorage() {
             );
             checkVisits(visits);
         });
-
     }
 }
 function fieldsReset() {
@@ -344,13 +386,6 @@ modalButton.addEventListener('click', function (e) {
     checkVisits(visits);
     modalWindow.reset();
     modalWindow.classList.remove('active');
-
-    document.addEventListener('mousemove', function (event) {
-        if (dragStatus) {
-            newCard.style.left = event.clientX - shiftX + 'px';
-            newCard.style.top = event.clientY - shiftY + 'px';
-        }
-    });
 });
 function removeVisit(e) {
     let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
