@@ -10,6 +10,7 @@
     color: #323f3f;
     background-color: rgba(242, 247, 247, 1);
     display: none;
+    z-index:11;
 }
 .select, .input {
     color: #323f3f;
