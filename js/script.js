@@ -102,189 +102,24 @@ class Visit {
         return this._newCard;
     }
 
-    dragManager(dragStatus,shiftX,shiftY){
-        this._newCard.addEventListener('mousedown', function (event) {
-                dragStatus = true;
-                console.log(this);
-                this.style.position = 'fixed';
-                this.style.zIndex = '10';
-                shiftX = event.clientX - this.getBoundingClientRect().left;
-                shiftY = event.clientY - this.getBoundingClientRect().top;
-                console.log(event.clientY);
-                console.log(event.clientY);
-                console.log(shiftX);
-                console.log(shiftY);
-                this.style.left = event.pageX - shiftX + 'px';
-                this.style.top = event.pageY - shiftY + 'px';
-            });
-
-    }
+    // dragManager(dragStatus,shiftX,shiftY){
+    //     this._newCard.addEventListener('mousedown', function (event) {
+    //             dragStatus = true;
+    //             console.log(this);
+    //             this.style.position = 'fixed';
+    //             this.style.zIndex = '10';
+    //             shiftX = event.clientX - this.getBoundingClientRect().left;
+    //             shiftY = event.clientY - this.getBoundingClientRect().top;
+    //             console.log(event.clientY);
+    //             console.log(event.clientY);
+    //             console.log(shiftX);
+    //             console.log(shiftY);
+    //             this.style.left = event.pageX - shiftX + 'px';
+    //             this.style.top = event.pageY - shiftY + 'px';
+    //         });
+    //
+    // }
 }
-
-
-// board.onmousedown = function(event) {
-//     let elem = event.target.closest('.visiting-card');
-//
-//     let shiftX = event.clientX - elem.getBoundingClientRect().left;
-//     let shiftY = event.clientY - elem.getBoundingClientRect().top;
-//
-//     elem.style.position = 'absolute';
-//     elem.style.zIndex = 1000;
-//     document.body.append(elem);
-//
-//     moveAt(event.pageX, event.pageY);
-//
-//     // переносит мяч на координаты (pageX, pageY),
-//     // дополнительно учитывая изначальный сдвиг относительно указателя мыши
-//     function moveAt(pageX, pageY) {
-//         elem.style.left = pageX - shiftX + 'px';
-//         elem.style.top = pageY - shiftY + 'px';
-//     }
-//
-//     function onMouseMove(event) {
-//         moveAt(event.pageX, event.pageY);
-//     }
-//
-//     // передвигаем мяч при событии mousemove
-//     document.addEventListener('mousemove', onMouseMove);
-//
-//     // отпустить мяч, удалить ненужные обработчики
-//     elem.onmouseup = function() {
-//         document.removeEventListener('mousemove', onMouseMove);
-//         elem.onmouseup = null;
-//     };
-//
-// };
-//
-// board.ondragstart = function() {
-//     return false;
-// };
-
-// const DragManager = new function() {
-//     const board = document.querySelector('.board-container');
-//     let dragObject = {};
-//     let self = this;
-//
-//     function onMouseDown(e) {
-//
-//         if (e.which != 1) return;
-//
-//         let elem = e.target.closest('.visiting-card');
-//         if (!elem) return;
-//
-//         dragObject.elem = elem;
-//
-//         dragObject.downX = e.pageX;
-//         dragObject.downY = e.pageY;
-//
-//         return false;
-//     }
-//
-//     function onMouseMove(e) {
-//         if (!dragObject.elem) return;
-//
-//         if (!dragObject.avatar) {
-//             let moveX = e.pageX - dragObject.downX;
-//             let moveY = e.pageY - dragObject.downY;
-//
-//             if (Math.abs(moveX) < 3 && Math.abs(moveY) < 3) {
-//                 return;
-//             }
-//
-//             dragObject.avatar = createAvatar(e);
-//             if (!dragObject.avatar) {
-//                 dragObject = {};
-//                 return;
-//             }
-//
-//             let coords = getCoords(dragObject.avatar);
-//             dragObject.shiftX = dragObject.downX - coords.left;
-//             dragObject.shiftY = dragObject.downY - coords.top;
-//
-//             startDrag(e);
-//         }
-//
-//         dragObject.avatar.style.left = e.pageX - dragObject.shiftX + 'px';
-//         dragObject.avatar.style.top = e.pageY - dragObject.shiftY + 'px';
-//
-//         return false;
-//     }
-//
-//     function onMouseUp(e) {
-//         if (dragObject.avatar) {
-//             finishDrag(e);
-//         }
-//         dragObject = {};
-//     }
-//
-//     function finishDrag(e) {
-//         let dropElem = findDroppable(e);
-//
-//         if (!dropElem) {
-//             self.onDragCancel(dragObject);
-//         } else {
-//             self.onDragEnd(dragObject, dropElem);
-//         }
-//     }
-//
-//     function createAvatar(e) {
-//         let avatar = dragObject.elem;
-//         let old = {
-//             parent: avatar.parentNode,
-//             nextSibling: avatar.nextSibling,
-//             position: avatar.position || '',
-//             left: avatar.left || '',
-//             top: avatar.top || '',
-//             zIndex: avatar.zIndex || ''
-//         };
-//
-//         avatar.rollback = function() {
-//             old.parent.insertBefore(avatar, old.nextSibling);
-//             avatar.style.position = old.position;
-//             avatar.style.left = old.left;
-//             avatar.style.top = old.top;
-//             avatar.style.zIndex = old.zIndex
-//         };
-//         return avatar;
-//     }
-//
-//     function startDrag(e) {
-//         let avatar = dragObject.avatar;
-//         document.body.appendChild(avatar);
-//         avatar.style.zIndex = 9999;
-//         avatar.style.position = 'absolute';
-//     }
-//
-//     function findDroppable(event) {
-//         dragObject.avatar.hidden = true;
-//
-//         let elem = document.elementFromPoint(event.clientX, event.clientY);
-//
-//         dragObject.avatar.hidden = false;
-//
-//         if (elem == null) {
-//             return null;
-//         }
-//         return elem.closest('.visiting-card');
-//     }
-//
-//     board.onmousemove = onMouseMove;
-//     board.onmouseup = onMouseUp;
-//     board.onmousedown = onMouseDown;
-//
-//     this.onDragEnd = function(dragObject, dropElem) {};
-//     this.onDragCancel = function(dragObject) {};
-//
-// };
-
-
-// function getCoords(elem) {
-//     let box = elem.getBoundingClientRect();
-//     return {
-//         top: box.top + pageYOffset,
-//         left: box.left + pageXOffset
-//     };
-// }
 
 class VisitToCardiologist extends Visit {
     constructor(doctor, visitDate, fullName, visitTarget, visitID, pressure, weightIndex, age, illnesses, comments) {
@@ -499,7 +334,6 @@ modalButton.addEventListener('click', function (e) {
     }
 
     addVisit(newVisit);
-    newVisit.dragManager(dragStatus,shiftX,shiftY);
     console.log(newVisit);
     const closeCards = document.querySelectorAll('.close');
     closeCards.forEach((closeCard)=>
