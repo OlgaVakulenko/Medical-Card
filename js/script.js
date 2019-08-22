@@ -21,7 +21,11 @@ const inputFields = document.querySelectorAll('.field-for-doctors'); //Инпу�
 const labelForNextVisit = document.getElementById('label-for-next-visit'); //Лейбл для следующего визита
 const labelForLastVisit = document.getElementById('label-for-last-visit'); // Лейбл для последнего визита
 
-let visits=[];
+let visits=[],
+    board = document.querySelector('.board-container'),
+    newVisit,
+    newCard;
+
 function addVisit(visitObj){
     visits.push(visitObj);
     console.log(visits);
@@ -354,35 +358,45 @@ modalButton.addEventListener('click', function (e) {
         weightIndex = weighClient.value,
         pressure = pressureValue.value,
         commentText = comment.value,
-        visitID = Date.now(),
-        board = document.querySelector('.board-container'),
-        newVisit,
-        newCard;
+        visitID = Date.now();
+        // board = document.querySelector('.board-container'),
+        // newVisit,
+        // newCard;
 
     switch (selectIndex) {
         case(0):
-            newVisit = new VisitToCardiologist(doctor, visitDate, fullName, visitTarget, visitID, pressure, weightIndex, age, illnesses, commentText);
-            newCard = newVisit.createNewCard();
-            board.appendChild(newCard);
-            newVisit.showMore();
+            if(!validation(doctor, visitDate, fullName, visitTarget, pressure, weightIndex, age, illnesses, commentText)){
+                newVisit = new VisitToCardiologist(doctor, visitDate, fullName, visitTarget, visitID, pressure, weightIndex, age, illnesses, commentText);
+                createNewVisit(newVisit);
+                         }
+            else {
+                alert('Заполните пожалуйста все поля');
+            }
             break;
+
         case(1):
-            newVisit = new VisitToDentist(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, commentText);
-            newCard = newVisit.createNewCard();
-            board.appendChild(newCard);
-            newVisit.showMore();
+            if(!validation(doctor, visitDate, fullName, visitTarget,lastVisitDate, commentText)){
+                newVisit = new VisitToDentist(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, commentText);
+                createNewVisit(newVisit);
+                           }
+            else {
+                alert('Заполните пожалуйста все поля');
+            }
+
             break;
         case(2):
-            newVisit = new VisitToTherapist(doctor, visitDate, fullName, visitTarget, visitID, age, commentText);
-            newCard = newVisit.createNewCard();
-            board.appendChild(newCard);
-            newVisit.showMore();
+            if(!validation(doctor, visitDate, fullName, visitTarget,age, commentText)){
+                newVisit = new VisitToTherapist(doctor, visitDate, fullName, visitTarget, visitID, age, commentText);
+                createNewVisit(newVisit);
+                         }
+            else {
+                alert('Заполните пожалуйста все поля');
+            }
+
             break;
     }
 
-    addVisit(newVisit);
 
-    console.log(newVisit);
     const closeCards = document.querySelectorAll('.close');
     console.log('closeCard',closeCards);
     closeCards.forEach((closeCard)=>
@@ -392,10 +406,9 @@ modalButton.addEventListener('click', function (e) {
     }
     );
     checkVisits(visits);
-    modalWindow.reset();
-    modalWindow.classList.remove('active');
-    newVisit.dragManager();
+
 });
+
 function removeVisit(e) {
     console.log('function remove Visit applied');
     let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
@@ -412,6 +425,27 @@ function removeVisit(e) {
     checkVisits(visits);
     visitObjToRemove.remove();
 }
+
+function validation(...arg) {
+    console.log(arg);
+    return  arg.some((item)=>
+        item === ''
+    );
+
+}
+
+function createNewVisit(newVisit){
+    newCard = newVisit.createNewCard();
+    board.appendChild(newCard);
+    newVisit.showMore();
+    addVisit(newVisit);
+    console.log(newVisit);
+    modalWindow.reset();
+    modalWindow.classList.remove('active');
+    newVisit.dragManager();
+
+}
+
 window.addEventListener('beforeunload',()=>{
     pushVisitsToLocalStorage(visits);
 });
