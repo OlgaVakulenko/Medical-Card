@@ -1,8 +1,3 @@
-/**
- * Created on 14.08.2019.
- */
-
-
 const mainButton = document.querySelector('.create-visit');//главная кнопка "Создать визит"
 const select = document.querySelector('.select');// Выбор врача
 const visitorName = document.getElementById('fullname-input');//ФИО пациента
@@ -67,10 +62,16 @@ class Visit {
         this._p = document.createElement('p');
         this._span = document.createElement('span');
         this._board = document.querySelector('.board-container');
+        this._savePaceDiv = document.createElement('div');
+        this._savePaceDiv.className='save-place-div';
+        this._getSavePlace = document.querySelector('.save-place-div');
     }
     get visitId(){
         return this._visitId;
     }
+    get savePlaceDiv(){
+        return this._getSavePlace;
+    };
     createNewCard() {
         this._p.className = 'name-of-field';
 
@@ -101,6 +102,7 @@ class Visit {
     dragManager(){
         let card = this._newCard;
         let board = this._board;
+        let savePlaceDiv = this._savePaceDiv;
         function zIndexCount() {
             let index = 0;
             return function () {
@@ -118,7 +120,6 @@ class Visit {
                 card.style.top = getCoords(card).top - getCoords(board).top + 'px';
                 card.style.position = 'absolute';
                 if (!dragStart) {
-                    let savePlaceDiv = document.createElement('div');
                     savePlaceDiv.style.width = card.offsetWidth + 'px';
                     savePlaceDiv.style.height = card.offsetHeight + 'px';
                     board.insertBefore(savePlaceDiv, card);
@@ -271,13 +272,13 @@ function checkLocalStorage() {
 
                     break;
                 case("стоматолог"):
-                    savedVisit = new VisitToDentist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._lastVisitDate);
+                    savedVisit = new VisitToDentist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._lastVisitDate, savedVisit._comments);
                     restoredCard = savedVisit.createNewCard();
                     document.querySelector('.board-container').appendChild(restoredCard);
                     savedVisit.showMore();
                     break;
                 case("терапевт"):
-                    savedVisit = new VisitToTherapist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._age);
+                    savedVisit = new VisitToTherapist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._age,savedVisit._comments);
                     restoredCard = savedVisit.createNewCard();
                     document.querySelector('.board-container').appendChild(restoredCard);
                     savedVisit.showMore();
@@ -289,7 +290,7 @@ function checkLocalStorage() {
             const closeCards = document.querySelectorAll('.close');
             closeCards.forEach((closeCard)=>
                 closeCard.onclick = function(e){
-                    removeVisit(e)
+                    removeVisit(e, savedVisit)
                 }
             );
             checkVisits(visits);
@@ -359,9 +360,6 @@ modalButton.addEventListener('click', function (e) {
         pressure = pressureValue.value,
         commentText = comment.value,
         visitID = Date.now();
-        // board = document.querySelector('.board-container'),
-        // newVisit,
-        // newCard;
 
     switch (selectIndex) {
         case(0):
@@ -402,14 +400,15 @@ modalButton.addEventListener('click', function (e) {
     closeCards.forEach((closeCard)=>
         closeCard.onclick = function(e){
             console.log('closeCard onclick applied');
-        removeVisit(e)
+        removeVisit(e, newVisit);
+
     }
     );
     checkVisits(visits);
 
 });
 
-function removeVisit(e) {
+function removeVisit(e, visit) {
     console.log('function remove Visit applied');
     let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
     console.log('card ID to remove: ', visitingCardID);
@@ -424,10 +423,10 @@ function removeVisit(e) {
     console.log('visits Array after Remove Visits func',visits);
     checkVisits(visits);
     visitObjToRemove.remove();
+    visit.savePlaceDiv.remove();
 }
 
 function validation(...arg) {
-    console.log(arg);
     return  arg.some((item)=>
         item === ''
     );

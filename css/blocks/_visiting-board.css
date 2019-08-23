@@ -4,7 +4,7 @@
     border: 2px solid #4acacb;
     border-radius: 5px;
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
     grid-template-rows: auto;
     align-items: start;
     grid-gap: 20px;
@@ -24,6 +24,7 @@
     display: none;
 }
 .visiting-card {
+    width: 250px;
     border-radius: 5px;
     background-color: white;
     border: 1px solid #ff955f;
@@ -44,7 +45,7 @@
     font-size: 13px;
     text-transform: capitalize;
     font-weight: bold;
-    padding: 7px 10px;
+    padding: 7px 20px;
     cursor: pointer;
 
 }
@@ -55,6 +56,7 @@
     background-color: white;
 }
 .close {
+    font-size: 24px;
     color: #ff955f;
     position: absolute;
     right: 5px;
