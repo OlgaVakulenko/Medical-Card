@@ -18,32 +18,8 @@ const labelForLastVisit = document.getElementById('label-for-last-visit'); // Л
 
 let visits=[],
     board = document.querySelector('.board-container'),
-    newVisit,
     newCard;
 
-function addVisit(visitObj){
-    visits.push(visitObj);
-    console.log(visits);
-}
-
-function checkVisits(visits) {
-    console.log('function check visits apllied');
-    const noVisitsText = document.querySelector('.no-visit');
-    if(visits.length===0){
-        noVisitsText.classList.add('active');
-    }else{
-        noVisitsText.classList.remove('active');
-    }
-}
-
-function pushVisitsToLocalStorage(visits) {
-    if(visits.length>0){
-        let localStorageVisits = JSON.stringify(visits);
-        localStorage.setItem('localVisits',localStorageVisits);
-    }else{
-        localStorage.clear();
-    }
-}
 window.onload = checkVisits(visits);
 window.onload = function(){
     checkLocalStorage();
@@ -62,18 +38,17 @@ class Visit {
         this._p = document.createElement('p');
         this._span = document.createElement('span');
         this._board = document.querySelector('.board-container');
-        this._savePaceDiv = document.createElement('div');
-        this._savePaceDiv.className = 'save-place-div';
-        this._getSavePlace = document.querySelector('.save-place-div');
+        this._savePlaceDiv = document.createElement('div');
+        this._savePlaceDiv.className = 'save-place-div';
+        this._savePlaceDiv.setAttribute('data-visitId', this._visitId);
     }
 
     get visitId() {
         return this._visitId;
     }
-
-    get savePlaceDiv() {
-        return this._getSavePlace;
-    };
+    get savePlaceDiv(){
+        return this._savePlaceDiv;
+    }
 
     createNewCard() {
         this._p.className = 'name-of-field';
@@ -105,7 +80,8 @@ class Visit {
     dragManager() {
         let card = this._newCard;
         let board = this._board;
-        let savePlaceDiv = this._savePaceDiv;
+        let savePlaceDiv = this._savePlaceDiv;
+
 
         function zIndexCount() {
             let index = 0;
@@ -215,6 +191,7 @@ class VisitToCardiologist extends Visit {
       })
   }
 }
+
 class VisitToDentist extends Visit {
     constructor(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, comments) {
         super(doctor, visitDate, fullName, visitTarget, visitID, comments);
@@ -237,6 +214,7 @@ class VisitToDentist extends Visit {
         })
     }
 }
+
 class VisitToTherapist extends Visit {
     constructor(doctor, visitDate, fullName, visitTarget, visitID, age, comments) {
         super(doctor, visitDate, fullName, visitTarget, visitID, comments);
@@ -258,6 +236,83 @@ class VisitToTherapist extends Visit {
         })
     }
 }
+
+mainButton.addEventListener('click',function () {
+    modalWindow.classList.add('active');
+    fieldsReset();
+});
+
+select.addEventListener('change',function () {
+    fieldsReset();
+});
+
+modalCrossButton.addEventListener ('click',function () {
+    modalWindow.classList.remove('active')
+});
+
+modalButton.addEventListener('click', function (e) {
+    e.preventDefault();
+    let selectIndex = select.selectedIndex,
+        doctor = select.options[selectIndex].value,
+        visitDate = nextVisit.value,
+        visitTarget = target.value,
+        fullName = visitorName.value,
+        illnesses = illnessList.value,
+        lastVisitDate = lastVisit.value,
+        age = ageClient.value,
+        weightIndex = weighClient.value,
+        pressure = pressureValue.value,
+        commentText = comment.value,
+        visitID = Date.now(),
+        board = document.querySelector('.board-container'),
+        newVisit,
+        newCard;
+
+    switch (selectIndex) {
+        case(0):
+            if(!validation(doctor, visitDate, fullName, visitTarget, pressure, weightIndex, age, illnesses, commentText)){
+                newVisit = new VisitToCardiologist(doctor, visitDate, fullName, visitTarget, visitID, pressure, weightIndex, age, illnesses, commentText);
+                createNewVisit(newVisit);
+            }
+            else {
+                alert('Заполните пожалуйста все поля');
+            }
+            break;
+        case(1):
+            if(!validation(doctor, visitDate, fullName, visitTarget,lastVisitDate, commentText)){
+                newVisit = new VisitToDentist(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, commentText);
+                createNewVisit(newVisit);
+            }
+            else {
+                alert('Заполните пожалуйста все поля');
+            }
+
+            break;
+        case(2):
+            if(!validation(doctor, visitDate, fullName, visitTarget,age, commentText)){
+                newVisit = new VisitToTherapist(doctor, visitDate, fullName, visitTarget, visitID, age, commentText);
+                createNewVisit(newVisit);
+            }
+            else {
+                alert('Заполните пожалуйста все поля');
+            }
+
+            break;
+    }
+
+    const closeCards = document.querySelectorAll('.close');
+    closeCards.forEach((closeCard)=>
+        closeCard.onclick = function(e){
+            console.log('closeCard onclick applied');
+            removeVisit(e);
+
+
+
+    }
+    );
+    checkVisits(visits);
+
+});
 function checkLocalStorage() {
 
     let localStorageVisits = localStorage.getItem('localVisits');
@@ -267,41 +322,35 @@ function checkLocalStorage() {
         let parsedVisits = JSON.parse(localStorageVisits);
         console.log('Visits in local storage: ', parsedVisits);
         parsedVisits.forEach(function (savedVisit) {
-            let restoredCard;
             switch (savedVisit._doctor) {
                 case("кардиолог"):
                     savedVisit = new VisitToCardiologist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._pressure, savedVisit._weightIndex, savedVisit._age, savedVisit._illnesses, savedVisit._comments);
-                    restoredCard = savedVisit.createNewCard();
-                    document.querySelector('.board-container').appendChild(restoredCard);
-                    savedVisit.showMore();
-
+                    createNewVisit(savedVisit);
                     break;
+
                 case("стоматолог"):
                     savedVisit = new VisitToDentist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._lastVisitDate, savedVisit._comments);
-                    restoredCard = savedVisit.createNewCard();
-                    document.querySelector('.board-container').appendChild(restoredCard);
-                    savedVisit.showMore();
+                    createNewVisit(savedVisit);
                     break;
+
                 case("терапевт"):
                     savedVisit = new VisitToTherapist(savedVisit._doctor, savedVisit._visitDate, savedVisit._fullname, savedVisit._visitTarget, savedVisit._visitId, savedVisit._age,savedVisit._comments);
-                    restoredCard = savedVisit.createNewCard();
-                    document.querySelector('.board-container').appendChild(restoredCard);
-                    savedVisit.showMore();
+                    createNewVisit(savedVisit);
                     break;
             }
-            addVisit(savedVisit);
-            savedVisit.dragManager();
+
             console.log(savedVisit);
             const closeCards = document.querySelectorAll('.close');
             closeCards.forEach((closeCard)=>
                 closeCard.onclick = function(e){
-                    removeVisit(e, savedVisit)
+                    removeVisit(e);
                 }
             );
             checkVisits(visits);
         });
     }
 }
+
 function fieldsReset() {
     inputFields.forEach(function (element) {
         element.style.display = 'none';
@@ -340,99 +389,48 @@ function fieldsReset() {
             break;
     }
 }
-mainButton.addEventListener('click',function () {
-    modalWindow.classList.add('active');
-    fieldsReset();
-});
-select.addEventListener('change',function () {
-    fieldsReset();
-});
-modalCrossButton.addEventListener ('click',function () {
-    modalWindow.classList.remove('active')
-});
 
-modalButton.addEventListener('click', function (e) {
-    e.preventDefault();
-    let selectIndex = select.selectedIndex,
-        doctor = select.options[selectIndex].value,
-        visitDate = nextVisit.value,
-        visitTarget = target.value,
-        fullName = visitorName.value,
-        illnesses = illnessList.value,
-        lastVisitDate = lastVisit.value,
-        age = ageClient.value,
-        weightIndex = weighClient.value,
-        pressure = pressureValue.value,
-        commentText = comment.value,
-        visitID = Date.now(),
-        board = document.querySelector('.board-container'),
-        newVisit,
-        newCard;
+function addVisit(visitObj){
+    visits.push(visitObj);
+    console.log(visits);
+}
 
-    switch (selectIndex) {
-        case(0):
-            if(!validation(doctor, visitDate, fullName, visitTarget, pressure, weightIndex, age, illnesses, commentText)){
-                newVisit = new VisitToCardiologist(doctor, visitDate, fullName, visitTarget, visitID, pressure, weightIndex, age, illnesses, commentText);
-                createNewVisit(newVisit);
-                         }
-            else {
-                alert('Заполните пожалуйста все поля');
-            }
-            break;
-        case(1):
-            if(!validation(doctor, visitDate, fullName, visitTarget,lastVisitDate, commentText)){
-                newVisit = new VisitToDentist(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, commentText);
-                createNewVisit(newVisit);
-                           }
-            else {
-                alert('Заполните пожалуйста все поля');
-            }
-
-            break;
-        case(2):
-            if(!validation(doctor, visitDate, fullName, visitTarget,age, commentText)){
-                newVisit = new VisitToTherapist(doctor, visitDate, fullName, visitTarget, visitID, age, commentText);
-                createNewVisit(newVisit);
-                         }
-            else {
-                alert('Заполните пожалуйста все поля');
-            }
-
-            break;
+function checkVisits(visits) {
+    console.log('function check visits apllied');
+    const noVisitsText = document.querySelector('.no-visit');
+    if(visits.length===0){
+        noVisitsText.classList.add('active');
+    }else{
+        noVisitsText.classList.remove('active');
     }
+}
 
-    addVisit(newVisit);
-    newVisit.dragManager();
-    console.log(newVisit);
-    const closeCards = document.querySelectorAll('.close');
-    console.log('closeCard',closeCards);
-    closeCards.forEach((closeCard)=>
-        closeCard.onclick = function(e){
-            console.log('closeCard onclick applied');
-        removeVisit(e, newVisit);
-
+function pushVisitsToLocalStorage(visits) {
+    if(visits.length>0){
+        let localStorageVisits = JSON.stringify(visits);
+        localStorage.setItem('localVisits',localStorageVisits);
+    }else{
+        localStorage.clear();
     }
-    );
-    checkVisits(visits);
+}
 
-});
-
-function removeVisit(e, visit) {
+function removeVisit(e) {
     console.log('function remove Visit applied');
     let visitingCardID = e.target.parentNode.parentNode.dataset.visitid;
     console.log('card ID to remove: ', visitingCardID);
     let visitObjToRemove= document.querySelector(`.visiting-card[data-visitid="${visitingCardID}"]`);
+    let savePlaceDivToRemove = document.querySelector(`.save-place-div[data-visitid="${visitingCardID}"]`);
+    console.log('savePlaceDivToRemove: ',savePlaceDivToRemove);
     console.log('card in DOM to remove ', visitObjToRemove);
     let removeIndex = visits.findIndex((e)=>{
         return e.visitId === +visitingCardID;
-
     });
     console.log('index in array to remove',removeIndex);
     visits.splice(removeIndex, 1);
     console.log('visits Array after Remove Visits func',visits);
     checkVisits(visits);
     visitObjToRemove.remove();
-    visit.savePlaceDiv.remove();
+    savePlaceDivToRemove.remove();
 }
 
 function validation(...arg) {
