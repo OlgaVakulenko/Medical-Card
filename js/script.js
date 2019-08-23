@@ -63,21 +63,24 @@ class Visit {
         this._span = document.createElement('span');
         this._board = document.querySelector('.board-container');
         this._savePaceDiv = document.createElement('div');
-        this._savePaceDiv.className='save-place-div';
+        this._savePaceDiv.className = 'save-place-div';
         this._getSavePlace = document.querySelector('.save-place-div');
     }
-    get visitId(){
+
+    get visitId() {
         return this._visitId;
     }
-    get savePlaceDiv(){
+
+    get savePlaceDiv() {
         return this._getSavePlace;
     };
+
     createNewCard() {
         this._p.className = 'name-of-field';
 
-        let  nameField = this._p.cloneNode(),
-             doctorField = this._p.cloneNode(),
-             visitField = this._p.cloneNode();
+        let nameField = this._p.cloneNode(),
+            doctorField = this._p.cloneNode(),
+            visitField = this._p.cloneNode();
 
         this._newCard.setAttribute('data-visitId', this._visitId);
         this._newCard.setAttribute('draggable', 'true');
@@ -99,10 +102,11 @@ class Visit {
         return this._newCard;
     }
 
-    dragManager(){
+    dragManager() {
         let card = this._newCard;
         let board = this._board;
         let savePlaceDiv = this._savePaceDiv;
+
         function zIndexCount() {
             let index = 0;
             return function () {
@@ -110,8 +114,10 @@ class Visit {
                 return index
             }
         }
+
         const zIndex = zIndexCount();
         moveCard(card);
+
         function moveCard(card) {
             let dragStart = false;
             card.onmousedown = function (e) {
@@ -165,7 +171,6 @@ class Visit {
 
             function getCoords(elem) {
                 let box = elem.getBoundingClientRect();
-
                 return {
                     top: box.top + pageYOffset,
                     left: box.left + pageXOffset
@@ -284,8 +289,8 @@ function checkLocalStorage() {
                     savedVisit.showMore();
                     break;
             }
-            savedVisit.dragManager();
             addVisit(savedVisit);
+            savedVisit.dragManager();
             console.log(savedVisit);
             const closeCards = document.querySelectorAll('.close');
             closeCards.forEach((closeCard)=>
@@ -359,7 +364,10 @@ modalButton.addEventListener('click', function (e) {
         weightIndex = weighClient.value,
         pressure = pressureValue.value,
         commentText = comment.value,
-        visitID = Date.now();
+        visitID = Date.now(),
+        board = document.querySelector('.board-container'),
+        newVisit,
+        newCard;
 
     switch (selectIndex) {
         case(0):
@@ -371,7 +379,6 @@ modalButton.addEventListener('click', function (e) {
                 alert('Заполните пожалуйста все поля');
             }
             break;
-
         case(1):
             if(!validation(doctor, visitDate, fullName, visitTarget,lastVisitDate, commentText)){
                 newVisit = new VisitToDentist(doctor, visitDate, fullName, visitTarget, visitID, lastVisitDate, commentText);
@@ -394,7 +401,9 @@ modalButton.addEventListener('click', function (e) {
             break;
     }
 
-
+    addVisit(newVisit);
+    newVisit.dragManager();
+    console.log(newVisit);
     const closeCards = document.querySelectorAll('.close');
     console.log('closeCard',closeCards);
     closeCards.forEach((closeCard)=>
