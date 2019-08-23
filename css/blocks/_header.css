@@ -1,3 +1,28 @@
 /**
  * Created on 14.08.2019.
  */
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo:link,
+.logo:visited{
+    text-decoration: none;
+    margin: 15px 100px 15px 0;
+}
+.button{
+    border: 2px solid #4acacb;
+    border-radius: 5px;
+    color: #4acacb;
+    font-size: 18px;
+    padding: 15px 25px;
+    background-color: transparent;
+    font-weight: 700;
+    cursor: pointer;
+}
+.button:hover,
+.button:active{
+    background-color:#4acacb;
+    color: #fff;
+}
